@@ -117,25 +117,33 @@ export default function Foro() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Foro</h1>
-          <div className="relative">
+          <div className="flex items-center">
             <button 
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setMostrarFormulario(!mostrarFormulario)}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4"
             >
-              {userName || 'Usuario'}
+              {mostrarFormulario ? 'Cancelar' : 'Añadir Post'}
             </button>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                <p className="block px-4 py-2 text-sm text-gray-700">Nombre: {userName || 'Usuario'}</p>
-                <p className="block px-4 py-2 text-sm text-gray-700">ID: {userId}</p>
-                <button 
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                >
-                  Cerrar Sesión
-                </button>
-              </div>
-            )}
+            <div className="relative">
+              <button 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                {userName || 'Usuario'}
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                  <p className="block px-4 py-2 text-sm text-gray-700">Nombre: {userName || 'Usuario'}</p>
+                  <p className="block px-4 py-2 text-sm text-gray-700">ID: {userId}</p>
+                  <button 
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
