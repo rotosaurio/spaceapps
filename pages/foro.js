@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
+import { signOut, useSession } from "next-auth/react";
 
 export default function Foro() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -9,194 +9,240 @@ export default function Foro() {
   const [contenido, setContenido] = useState('');
   const [error, setError] = useState('');
   const [editando, setEditando] = useState(null);
-  const [userId, setUserId] = useState(null);
   const [busqueda, setBusqueda] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     cargarPublicaciones();
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = jwt.decode(token);
-      setUserId(decodedToken.userId);
-      setUserName(decodedToken.nombre || 'Usuario'); // Usa 'Usuario' como fallback si no hay nombre
-    }
   }, []);
-
-  useEffect(() => {
-    const closeDropdown = (e) => {
-      if (isDropdownOpen && !e.target.closest('.relative')) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('click', closeDropdown);
-
-    return () => {
-      document.removeEventListener('click', closeDropdown);
-    };
-  }, [isDropdownOpen]);
 
   const cargarPublicaciones = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/foro', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get('/api/foro');
       setPublicaciones(response.data);
-      const decodedToken = jwt.decode(token);
-      setUserId(decodedToken.userId);
-      const userResponse = await axios.get(`/api/usuario/${decodedToken.userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUserName(userResponse.data.nombre);
     } catch (error) {
       console.error("Error al cargar publicaciones:", error);
+      setError('Error al cargar publicaciones.');
     }
   };
 
-  const handleSubmit = async (e) => {
+  const manejarPublicacion = async (e) => {
     e.preventDefault();
     setError('');
 
+    if (!titulo.trim() || !contenido.trim()) {
+      setError('El título y el contenido no pueden estar vacíos.');
+      return;
+    }
+
+    const nombreUsuario = session?.user?.name || 'Usuario Anónimo';
+
     try {
-      const token = localStorage.getItem('token');
+      const data = { titulo, contenido, nombre: nombreUsuario };
+
       if (editando) {
-        await axios.put('/api/foro', { id: editando, titulo, contenido }, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await axios.put(`/api/foro?id=${editando._id}`, data);
+        setPublicaciones(publicaciones.map(pub => 
+          pub._id === editando._id ? { ...pub, titulo, contenido } : pub
+        ));
         setEditando(null);
       } else {
-        await axios.post('/api/foro', { titulo, contenido }, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await axios.post('/api/foro', data);
+        setPublicaciones([response.data.publicacion, ...publicaciones]);
       }
+
       setTitulo('');
       setContenido('');
       setMostrarFormulario(false);
-      cargarPublicaciones();
     } catch (error) {
-      setError(error.response?.data?.error || 'Error al crear/editar la publicación');
+      console.error("Error al gestionar la publicación:", error);
+      setError(error.response?.data?.error || 'Error al gestionar la publicación.');
     }
   };
 
   const handleEditar = (pub) => {
-    setEditando(pub._id);
+    setEditando(pub);
     setTitulo(pub.titulo);
     setContenido(pub.contenido);
     setMostrarFormulario(true);
   };
 
   const handleEliminar = async (id) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta publicación?')) return;
+
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete('/api/foro', {
-        headers: { Authorization: `Bearer ${token}` },
-        data: { id }
-      });
-      cargarPublicaciones();
+      await axios.delete(`/api/foro?id=${id}`);
+      setPublicaciones(publicaciones.filter(pub => pub._id !== id));
     } catch (error) {
-      setError(error.response?.data?.error || 'Error al eliminar la publicación');
+      console.error("Error al eliminar la publicación:", error);
+      setError(error.response?.data?.error || 'Error al eliminar la publicación.');
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    router.push('/login');
+  const buscarPublicaciones = async () => {
+    if (!busqueda.trim()) {
+      cargarPublicaciones();
+      return;
+    }
+
+    try {
+      const response = await axios.get(`/api/foro?nombre=${busqueda}`);
+      setPublicaciones(response.data);
+    } catch (error) {
+      console.error("Error al buscar publicaciones:", error);
+      setError('Error al buscar publicaciones.');
+    }
   };
 
-  const publicacionesFiltradas = publicaciones.filter(pub =>
-    pub.autor.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem('token');
+      await signOut({ callbackUrl: '/login' });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
+    <div className="min-h-screen bg-gray-100 py-6 flex flex-col items-center">
+      <div className="w-full max-w-4xl px-4">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Foro</h1>
-          <div className="flex items-center">
+          <div className="relative">
             <button 
-              onClick={() => setMostrarFormulario(!mostrarFormulario)}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none"
             >
-              {mostrarFormulario ? 'Cancelar' : 'Añadir Post'}
+              {session?.user?.name || 'Usuario Anónimo'}
+              <svg className="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
-            <div className="relative">
-              <button 
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                {userName || 'Usuario'}
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                  <p className="block px-4 py-2 text-sm text-gray-700">Nombre: {userName || 'Usuario'}</p>
-                  <p className="block px-4 py-2 text-sm text-gray-700">ID: {userId}</p>
-                  <button 
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                  >
-                    Cerrar Sesión
-                  </button>
-                </div>
-              )}
-            </div>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-20">
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                >
+                  Cerrar Sesión
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center mb-6">
+          <button 
+            onClick={() => setMostrarFormulario(!mostrarFormulario)}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            {mostrarFormulario ? "Cerrar Formulario" : "Añadir Publicación"}
+          </button>
+          <div className="flex items-center">
+            <input 
+              type="text"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              placeholder="Buscar por nombre de usuario"
+              className="w-full p-2 border rounded mr-2"
+            />
+            <button 
+              onClick={buscarPublicaciones}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Buscar
+            </button>
           </div>
         </div>
 
         {mostrarFormulario && (
-          <form onSubmit={handleSubmit} className="mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <input
-              type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              placeholder="Título"
-              className="w-full mb-4 p-2 border rounded"
-              required
-            />
-            <textarea
-              value={contenido}
-              onChange={(e) => setContenido(e.target.value)}
-              placeholder="Contenido"
-              className="w-full mb-4 p-2 border rounded"
-              rows="4"
-              required
-            />
-            <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              {editando ? 'Actualizar' : 'Publicar'}
-            </button>
+          <form onSubmit={manejarPublicacion} className="mb-6 bg-white p-6 rounded shadow">
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="titulo">
+                Título
+              </label>
+              <input
+                id="titulo"
+                type="text"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                placeholder="Título de la publicación"
+                className="w-full p-2 border rounded"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contenido">
+                Contenido
+              </label>
+              <textarea
+                id="contenido"
+                value={contenido}
+                onChange={(e) => setContenido(e.target.value)}
+                placeholder="Escribe tu publicación aquí..."
+                className="w-full p-2 border rounded"
+                rows="4"
+                required
+              />
+            </div>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
+            <div className="flex items-center">
+              <button 
+                type="submit" 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+              >
+                {editando ? "Actualizar Publicación" : "Publicar"}
+              </button>
+              {editando && (
+                <button 
+                  type="button"
+                  onClick={() => { setEditando(null); setTitulo(''); setContenido(''); setMostrarFormulario(false); }}
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Cancelar
+                </button>
+              )}
+            </div>
           </form>
         )}
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-
-        <input
-          type="text"
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          placeholder="Buscar por nombre de usuario"
-          className="w-full mb-4 p-2 border rounded"
-        />
-
-        <div className="space-y-4">
-          {publicacionesFiltradas.map((pub) => (
-            <div key={pub._id} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-              <h3 className="font-bold text-xl mb-2">{pub.titulo}</h3>
-              <p className="text-gray-700 text-base mb-4">{pub.contenido}</p>
-              <div className="flex justify-between items-center">
-                <small className="text-gray-500">Autor: {pub.autor}, Fecha: {new Date(pub.fechaCreacion).toLocaleString()}</small>
-                {pub.autorId === userId && (
-                  <div>
-                    <button onClick={() => handleEditar(pub)} className="text-blue-500 hover:text-blue-700 mr-2">Editar</button>
-                    <button onClick={() => handleEliminar(pub._id)} className="text-red-500 hover:text-red-700">Eliminar</button>
-                  </div>
-                )}
+        <div>
+          {publicaciones.length === 0 ? (
+            <p className="text-gray-700">No hay publicaciones para mostrar.</p>
+          ) : (
+            publicaciones.map(pub => (
+              <div key={pub._id} className="mb-4 p-4 bg-white shadow-md rounded">
+                <h2 className="text-2xl font-bold mb-2">{pub.titulo}</h2>
+                <p className="text-gray-700 mb-2">{pub.contenido}</p>
+                <p className="text-sm text-gray-500">Publicado por: {pub.nombre} el {new Date(pub.fecha).toLocaleString()}</p>
+                <div className="flex justify-end mt-2">
+                  {pub.nombre === session?.user?.name && (
+                    <div>
+                      <button 
+                        onClick={() => handleEditar(pub)} 
+                        className="text-blue-500 hover:text-blue-700 mr-4"
+                      >
+                        Editar
+                      </button>
+                      <button 
+                        onClick={() => handleEliminar(pub._id)} 
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

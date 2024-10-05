@@ -1,12 +1,20 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { signOut, useSession } from "next-auth/react";
 
 export default function Noticias() {
   const router = useRouter();
+  const { data: session, status } = useSession();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      // Eliminar el token JWT si existe
+      localStorage.removeItem('token');
+      // Cerrar sesión con NextAuth (OAuth)
+      await signOut({ callbackUrl: '/login' });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
   };
 
   return (

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Link from 'next/link';
 
 export default function Register() {
   const [nombre, setNombre] = useState('');
@@ -14,7 +15,7 @@ export default function Register() {
     setError('');
 
     try {
-      await axios.post('/api/auth', {
+      await axios.post('/api/autenticacion', {
         action: 'register',
         nombre,
         correo,
@@ -61,7 +62,6 @@ export default function Register() {
                 id="correo"
                 name="correo"
                 type="email"
-                autoComplete="email"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Correo electrónico"
@@ -77,7 +77,6 @@ export default function Register() {
                 id="contraseña"
                 name="contraseña"
                 type="password"
-                autoComplete="new-password"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Contraseña"
@@ -94,6 +93,13 @@ export default function Register() {
             >
               Registrarse
             </button>
+          </div>
+          <div className="text-sm mt-3">
+            <Link href="/login">
+              <span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                ¿Ya tienes una cuenta? Inicia sesión aquí
+              </span>
+            </Link>
           </div>
         </form>
         {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}
