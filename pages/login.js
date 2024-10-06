@@ -108,7 +108,6 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Redirigir a la página de noticias si el inicio de sesión es exitoso
         router.push('/noticias');
       } else {
         setError(data.error || 'Error en el inicio de sesión');
