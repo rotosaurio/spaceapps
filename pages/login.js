@@ -147,10 +147,7 @@ export default function Login() {
         contraseña
       });
 
-      // Almacenar el token en el almacenamiento local o cookies según tu preferencia
       localStorage.setItem('token', response.data.token);
-      
-      // Redirigir al usuario a la página de noticias
       router.push('/noticias');
     } catch (error) {
       setError(error.response?.data?.error || 'Error al iniciar sesión');
