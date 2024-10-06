@@ -7,46 +7,46 @@ import Image from 'next/image';
 // Datos de los miembros del equipo
 const teamMembers = [
   {
-    name: "Alejandra Vega",
+    name: "Edgar Rivera",
     role: "Comandante de Misión",
-    description: "Líder estratégica con experiencia en exploración espacial",
-    imageUrl: "/placeholder.svg",
-    icon: "rocket"
+    description: "Líder estratégica con experiencia en programacion",
+    imageUrl: "/Edgar.jpg",
+    //icon: "rocket"
   },
   {
-    name: "Roberto Núñez",
+    name: "Cristian Cruz",
+    role: "Tecnico",
+    description: "Programador",
+    imageUrl: "/Cristian_Cruz.jpg",
+    //icon: "radio"
+  },
+  {
+    name: "Karely Rodriguez",
+    role: "Cientifica",
+    description: "Investigadora",
+    imageUrl: "/yo.jpg",
+    //icon: "microscope"
+  },
+  {
+    name: "Angel Sanchez",
+    role: "Tecnico",
+    description: "Encargado del diseño 3D",
+    imageUrl: "/Angel_Sanchez.jpg",
+    //icon: "shield"
+  },
+  {
+    name: "Milo Garcia",
+    role: "Cientifico",
+    description: "Encargado del diseño 3D",
+    imageUrl: "/Milo_Garcia.jpg",
+    //icon: "cog"
+  },
+  {
+    name: "Hector Murgia",
     role: "Especialista en Comunicaciones",
-    description: "Experto en sistemas de comunicación interplanetaria",
-    imageUrl: "/placeholder.svg",
-    icon: "radio"
-  },
-  {
-    name: "Isabel Moreno",
-    role: "Astrobióloga",
-    description: "Investigadora de formas de vida extraterrestre",
-    imageUrl: "/placeholder.svg",
-    icon: "microscope"
-  },
-  {
-    name: "Diego Torres",
-    role: "Oficial de Seguridad",
-    description: "Encargado de la protección y defensa de la nave",
-    imageUrl: "/placeholder.svg",
-    icon: "shield"
-  },
-  {
-    name: "Sofía Ramírez",
-    role: "Ingeniera de Propulsión",
-    description: "Especialista en sistemas de propulsión avanzados",
-    imageUrl: "/placeholder.svg",
-    icon: "cog"
-  },
-  {
-    name: "Javier Mendoza",
-    role: "Médico Espacial",
-    description: "Responsable de la salud y bienestar de la tripulación",
-    imageUrl: "/placeholder.svg",
-    icon: "first-aid"
+    description: "Responsable de la administracion",
+    imageUrl: "/Hector_Garcia.jpg",
+    //icon: "first-aid"
   }
 ];
 
@@ -122,9 +122,18 @@ const TeamPage = () => {
 
       <div ref={mountRef} style={{ position: 'fixed', top: 0, left: 0, zIndex: -1 }} />
 
-      <header>
-        <h1>Exploradores del Cosmos: Chihuahua 2024</h1>
-        <p>Conoce a los valientes pioneros que llevarán Space Apps Chihuahua más allá de las estrellas</p>
+      <header className="mb-12">
+        <h1 className="text-5xl font-bold text-white mb-6 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+          Exploradores del Cosmos: Chihuahua 2024
+        </h1>
+        <p className="text-xl text-gray-300 mb-8">
+          Conoce a los valientes pioneros que llevarán Space Apps Chihuahua más allá de las estrellas
+        </p>
+        <Link href="/noticias">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+            Ver Noticias
+          </button>
+        </Link>
       </header>
 
       <div className="team-members">
@@ -137,10 +146,8 @@ const TeamPage = () => {
               <div className="member-info">
                 <h3>{member.name}</h3>
                 <h4>{member.role}</h4>
+                <p className="member-description">{member.description}</p>
               </div>
-            </div>
-            <div className="member-description">
-              <p>{member.description}</p>
             </div>
           </div>
         ))}
@@ -153,6 +160,8 @@ const TeamPage = () => {
       </div>
 
       <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
         .explorers-team {
           position: relative;
           min-height: 100vh;
@@ -161,18 +170,17 @@ const TeamPage = () => {
           margin: 0 auto;
           z-index: 1;
           font-family: 'Segoe UI', sans-serif;
-          color: white;
+          color: #F2E0DC;
         }
         header {
           text-align: center;
           margin-bottom: 3rem;
         }
         h1 {
+          font-family: 'Orbitron', sans-serif;
           font-size: 3rem;
-          background: linear-gradient(to right, #60a5fa, #a78bfa);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #F2E0DC;
+          text-shadow: 0 0 10px rgba(242, 224, 220, 0.5);
         }
         .team-members {
           display: grid;
@@ -184,8 +192,8 @@ const TeamPage = () => {
           border-radius: 1rem;
           overflow: hidden;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          border: 2px solid #4299e1;
-          transition: transform 0.3s, box-shadow 0.3s;
+          border: 2px solid #F2E0DC;
+          transition: transform 0.3s;
           animation: fadeIn 0.5s ease-out forwards;
         }
         @keyframes fadeIn {
@@ -194,53 +202,49 @@ const TeamPage = () => {
         }
         .team-member:hover {
           transform: scale(1.05);
-          box-shadow: 0 0 25px rgba(66, 153, 225, 0.6);
         }
         .member-window {
           position: relative;
-          height: 200px;
-          border-radius: 1rem 1rem 0 0;
+          height: 300px;
+          border-radius: 1rem;
           overflow: hidden;
-        }
-        .member-window::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
-          z-index: 1;
+          transition: transform 0.3s ease;
         }
         .member-image {
           width: 100%;
           height: 100%;
+          transition: transform 0.3s ease;
         }
         .member-info {
           position: absolute;
-          bottom: 1rem;
-          left: 1rem;
-          right: 1rem;
-          color: white;
-          z-index: 2;
-          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: rgba(0, 0, 0, 0.7);
+          color: #F2E0DC;
+          padding: 1rem;
+          transform: translateY(100%);
+          transition: transform 0.3s ease;
+        }
+        .team-member:hover .member-info {
+          transform: translateY(0);
+        }
+        .team-member:hover .member-image {
+          transform: scale(1.1);
         }
         .member-info h3 {
           font-size: 1.25rem;
           margin: 0 0 0.25rem;
+          color: #F2E0DC;
         }
         .member-info h4 {
           font-size: 1rem;
-          color: #60a5fa;
-          margin: 0;
+          color: #F2E0DC;
+          margin: 0 0 0.5rem;
         }
         .member-description {
-          padding: 1rem;
-          background-color: rgba(30, 41, 59, 0.9);
-        }
-        .member-description p {
           font-size: 0.875rem;
-          color: #cbd5e1;
+          color: #F2E0DC;
           margin: 0;
         }
         .back-button {
@@ -250,15 +254,15 @@ const TeamPage = () => {
         #back-button {
           display: inline-block;
           padding: 0.75rem 1.5rem;
-          background: linear-gradient(to right, #3b82f6, #8b5cf6);
-          color: white;
+          background: #F2E0DC;
+          color: #1E293B;
           text-decoration: none;
           font-weight: bold;
           border-radius: 9999px;
           transition: all 0.3s;
         }
         #back-button:hover {
-          background: linear-gradient(to right, #2563eb, #7c3aed);
+          background: #E6C8C3;
           transform: translateY(-2px);
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
