@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import FloatingButton from '../components/FloatingButton';
 import Link from 'next/link';
 import { signOut, useSession } from "next-auth/react";
 
-export default function Planetario() {
+const Planetario = () => {
   const mountRef = useRef(null);
   const { data: session, status } = useSession();
   const [selectedPlanet, setSelectedPlanet] = useState(null);
@@ -199,22 +200,8 @@ export default function Planetario() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="bg-black py-4 px-4 flex justify-between items-center">
-        <div className="w-96 h-24">
-          <img src="/Logo cosmoXplora.png" alt="Logo CosmoXplora" className="w-full h-full object-contain" />
-        </div>
-        <div className="flex items-center">
-          <span className="text-white mr-4">{session?.user?.name || 'Usuario Anónimo'}</span>
-          <button 
-            onClick={handleLogout}
-            className="text-white bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded"
-          >
-            Cerrar Sesión
-          </button>
-        </div>
-      </div>
-      <div ref={mountRef} style={{ width: '100%', height: 'calc(100vh - 8rem)' }} />
+    <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
+      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
       {showPopup && (
         <div className="absolute top-20 right-4 bg-gray-800 p-4 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-2">{selectedPlanet}</h2>
@@ -228,6 +215,11 @@ export default function Planetario() {
           </button>
         </Link>
       </div>
+      <div style={{ position: 'absolute', right: '20px', bottom: '20px' }}>
+        <FloatingButton />
+      </div>
     </div>
   );
-}
+};
+
+export default Planetario;
