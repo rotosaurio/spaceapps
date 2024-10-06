@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -39,8 +39,11 @@ export default function Login() {
         password: contraseña,
       });
 
-      localStorage.setItem('token', response.data.token);
-      router.push('/noticias');
+      if (result.error) {
+        setError(result.error);
+      } else {
+        router.push('/noticias');
+      }
     } catch (error) {
       console.error('Error:', error);
       setError('Error en el servidor');
@@ -72,7 +75,7 @@ export default function Login() {
       </Head>
 
       <main className="w-2/3 p-8 pr-24 flex items-center">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-2x1">
           <h1 
             className="text-6xl font-bold text-white mb-12 drop-shadow-lg tracking-wider"
             style={{ textIndent: '3em' }}
@@ -86,7 +89,7 @@ export default function Login() {
                 type="email" 
                 placeholder="Correo electrónico" 
                 required 
-                className="w-full bg-[#151626] text-white py-3 px-16 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300 text-white"
+                className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
                 value={correo}
                 onChange={(e) => setCorreo(e.target.value)}
               />
@@ -96,25 +99,25 @@ export default function Login() {
                 type="password" 
                 placeholder="Contraseña" 
                 required 
-                className="w-full bg-[#151626] text-white py-3 px-16 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300 text-white"
+                className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
                 value={contraseña}
                 onChange={(e) => setContraseña(e.target.value)}
               />
             </div>
-            <div className="mt-12 space-y-4">
+            <div className="mt-8 space-y-4">
               <button 
                 type="submit" 
-                className="w-full bg-[#5D6C8C] text-white py-3 px-16 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
+                className="w-full bg-[#5D6C8C] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
               >
                 Iniciar Sesión
               </button>
               <button 
                 type="button" 
                 onClick={handleGoogleSignIn}
-                className="w-full bg-[#5D6C8C] text-white py-3 px-16 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide flex items-center justify-center"
+                className="w-full bg-[#5D6C8C] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide flex items-center justify-center"
               >
-                <img src="/google-icon.png" alt="Google" className="w-6 h-6 mr-2" />
-                Iniciar sesión con Google
+                <img src="/google.png" alt="Google" className="w-14 h-10 mr-2" />
+                Iniciar con Google
               </button>
             </div>
           </form>
