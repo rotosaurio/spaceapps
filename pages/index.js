@@ -6,6 +6,7 @@ import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 
 function Stars({ count = 5000 }) {
   const points = useMemo(() => {
@@ -61,11 +62,24 @@ function Scene() {
   )
 }
 
-function Button({ href, children, variant = "default" }) {
+function Button({ href, children, variant = "default", onClick }) {
   const baseClasses = "px-8 py-3 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg"
   const variantClasses = {
     default: "bg-white text-black hover:bg-gray-200",
     outline: "bg-transparent text-white border-2 border-white hover:bg-white hover:text-black"
+  }
+
+  if (onClick) {
+    return (
+      <motion.button 
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={`${baseClasses} ${variantClasses[variant]}`}
+        onClick={onClick}
+      >
+        {children}
+      </motion.button>
+    )
   }
 
   return (
@@ -82,6 +96,13 @@ function Button({ href, children, variant = "default" }) {
 }
 
 export default function NASAGalaxyPortal() {
+  const router = useRouter()
+
+  const handleGuestAccess = () => {
+    localStorage.setItem('guestToken', 'true')
+    router.push('/foro')
+  }
+
   return (
     <main className="relative w-full h-screen overflow-hidden bg-black text-white font-sans">
       <Canvas className="absolute inset-0">
@@ -114,7 +135,7 @@ export default function NASAGalaxyPortal() {
               Registrarse
             </Button>
           </div>
-          <Button href="/guest-login" variant="outline">
+          <Button onClick={() => router.push('/noticias')} variant="outline">
             Acceso de Invitado
           </Button>
           <Button href="/team-page" variant="outline">

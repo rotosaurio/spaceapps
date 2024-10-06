@@ -50,7 +50,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "El correo electrónico ya está registrado" });
       }
 
-      const hashedPassword = await bcrypt.hash(contraseña, 10); // Encriptar la contraseña
+      const hashedPassword = await bcrypt.hash(contraseña, 10);
 
       await collection.insertOne({
         nombre,
