@@ -12,14 +12,11 @@
     "@auth/mongodb-adapter": "^3.6.0",
     "@react-three/drei": "^9.114.0",
     "@react-three/fiber": "^8.17.9",
+    "@tweenjs/tween.js": "^25.0.0",
     "@types/three": "^0.169.0",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
-<<<<<<< HEAD
-    "i18next": "^23.15.2",
-=======
     "framer-motion": "^11.11.1",
->>>>>>> ab551c712c23cafe1d072b85747de7ed90d07583
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
     "next": "14.2.14",
