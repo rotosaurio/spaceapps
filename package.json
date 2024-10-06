@@ -12,6 +12,7 @@
     "@auth/mongodb-adapter": "^3.6.0",
     "@react-three/drei": "^9.114.0",
     "@react-three/fiber": "^8.17.9",
+    "@types/three": "^0.169.0",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
