@@ -51,43 +51,46 @@ const ChatWindow = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed bottom-24 right-6 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 border border-gray-200 dark:border-gray-700">
-      <div className="flex justify-between items-center bg-blue-500 dark:bg-blue-600 text-white p-3 rounded-t-lg">
-        <h3 className="font-bold">Asistente de Tienda Taller</h3>
-        <button onClick={onClose} className="text-xl hover:text-gray-200">&times;</button>
-      </div>
-      <div ref={chatContainerRef} className="h-64 overflow-y-auto p-3 bg-gray-50 dark:bg-gray-900">
-        {chatHistory.slice(1).map((msg, index) => (
-          <div key={index} className={`mb-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
-            <span className={`inline-block p-2 rounded-lg ${
-              msg.role === 'user' 
-                ? 'bg-blue-100 dark:bg-blue-700 text-gray-800 dark:text-white' 
-                : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white'
-            }`}>
-              {msg.content}
-            </span>
-          </div>
-        ))}
-        {isLoading && <div className="text-center text-gray-500 dark:text-gray-400">Procesando...</div>}
-      </div>
-      <form onSubmit={handleSubmit} className="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-        <div className="flex">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Escribe tu mensaje..."
-            className="flex-grow px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-lg transition duration-300 disabled:opacity-50"
-            disabled={isLoading}
-          >
-            Enviar
-          </button>
+    <div className="fixed bottom-24 right-6 w-80 rounded-lg shadow-xl z-50 overflow-hidden">
+      <div className="absolute inset-0 bg-[#5D6C8C] bg-opacity-60 backdrop-filter backdrop-blur-sm"></div>
+      <div className="relative">
+        <div className="flex justify-between items-center bg-[#5D6C8C] bg-opacity-80 text-white p-3 rounded-t-lg">
+          <h3 className="font-bold">Asistente de Tienda Taller</h3>
+          <button onClick={onClose} className="text-xl hover:text-gray-200">&times;</button>
         </div>
-      </form>
+        <div ref={chatContainerRef} className="h-64 overflow-y-auto p-3">
+          {chatHistory.slice(1).map((msg, index) => (
+            <div key={index} className={`mb-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+              <span className={`inline-block p-2 rounded-lg ${
+                msg.role === 'user' 
+                  ? 'bg-blue-100 bg-opacity-80 text-gray-800' 
+                  : 'bg-gray-200 bg-opacity-80 text-gray-800'
+              }`}>
+                {msg.content}
+              </span>
+            </div>
+          ))}
+          {isLoading && <div className="text-center text-white">Procesando...</div>}
+        </div>
+        <form onSubmit={handleSubmit} className="p-3 border-t border-gray-200 bg-opacity-80">
+          <div className="flex">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Escribe tu mensaje..."
+              className="flex-grow px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] bg-white bg-opacity-80 text-gray-900"
+            />
+            <button
+              type="submit"
+              className="bg-[#5D6C8C] hover:bg-[#4A5670] text-white px-4 py-2 rounded-r-lg transition duration-300 disabled:opacity-50"
+              disabled={isLoading}
+            >
+              Enviar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

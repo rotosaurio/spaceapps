@@ -210,7 +210,7 @@ const Planetario = () => {
       )}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
         <Link href="/foro">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
             Ir al Foro
           </button>
         </Link>
