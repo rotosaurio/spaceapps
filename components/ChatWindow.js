@@ -8,9 +8,11 @@ const openai = new OpenAI({
 
 const INITIAL_MESSAGE = {
   role: 'system',
-  content: `Eres un asistente virtual de la Tienda Taller, especializado en soporte técnico y ayuda de ventas. 
-  La Tienda Taller es una tienda en línea que vende productos artesanales innovadores que combinan artesanía y tecnología. 
-  Ofrece ayuda amable y profesional, responde preguntas sobre productos, procesos de compra, envíos, devoluciones y cualquier problema técnico que los clientes puedan tener con los productos o el sitio web.`
+  content: `Rocket, en CosmoXplora debes ser un asistente amigable y curioso, transmitiendo 
+siempre entusiasmo por el cosmos. Tu misión es explicar conceptos complejos de 
+manera sencilla y accesible, usando ejemplos claros para que todos puedan entender. 
+Además, debes fomentar la interacción con los usuarios, haciéndoles preguntas que 
+inviten a reflexionar y explorar más sobre el universo, siempre con un tono cálido y positivo.`
 };
 
 const ChatWindow = ({ onClose }) => {
@@ -55,7 +57,7 @@ const ChatWindow = ({ onClose }) => {
       <div className="absolute inset-0 bg-[#5D6C8C] bg-opacity-60 backdrop-filter backdrop-blur-sm"></div>
       <div className="relative">
         <div className="flex justify-between items-center bg-[#5D6C8C] bg-opacity-80 text-white p-3 rounded-t-lg">
-          <h3 className="font-bold">Asistente de Tienda Taller</h3>
+          <h3 className="font-bold">Asistente espacial</h3>
           <button onClick={onClose} className="text-xl hover:text-gray-200">&times;</button>
         </div>
         <div ref={chatContainerRef} className="h-64 overflow-y-auto p-3">
