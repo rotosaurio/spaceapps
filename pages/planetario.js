@@ -33,10 +33,10 @@ export default function Planetario() {
       const geometry = new THREE.SphereGeometry(radius, 32, 32);
       const material = new THREE.MeshPhongMaterial({
         map: textureLoader.load(texture),
-        shininess: 30,
-        specular: new THREE.Color(0x555555),
-        emissive: new THREE.Color(0x222222),
-        emissiveIntensity: 0.2
+        shininess: 60,
+        specular: new THREE.Color(0xaaaaaa),  // Color especular más claro
+        emissive: new THREE.Color(0x111111),  // Reduce la emisividad
+        emissiveIntensity: 0.1  // Reduce la intensidad emisiva
       });
       const planet = new THREE.Mesh(geometry, material);
       planet.position.set(position, 0, 0);
@@ -55,9 +55,9 @@ export default function Planetario() {
     const sunLight = new THREE.PointLight(0xffffff, 8, 100);
     sun.add(sunLight);
 
-    // Luz ambiental más brillante
-    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
-    scene.add(ambientLight);
+// Luz ambiental más clara
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Luz blanca y más intensa
+scene.add(ambientLight);
 
     // Crear órbitas
     const createOrbit = (radius) => {
