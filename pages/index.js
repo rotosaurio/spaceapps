@@ -89,7 +89,7 @@ export default function NASAGalaxyPortal() {
           transition={{ duration: 1 }}
           className="text-6xl font-bold mb-4 text-white"
         >
-          Explora el Cosmos
+          CosmoXplora
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
