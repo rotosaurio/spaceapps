@@ -1,89 +1,122 @@
 'use client'
 
-import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
+import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Stars } from '@react-three/drei'
+import { Points, PointMaterial } from '@react-three/drei'
+import * as THREE from 'three'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
 
-function StarryBackground() {
-  return (
-    <Canvas style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-    </Canvas>
-  )
-}
+function Stars({ count = 5000 }) {
+  const points = useMemo(() => {
+    const p = new Array(count).fill().map(() => (Math.random() - 0.5) * 20)
+    return new Float32Array(p)
+  }, [count])
 
-function Meteor({ position }) {
-  const mesh = useRef()
+  const ref = useRef()
   useFrame((state, delta) => {
-    mesh.current.position.y -= delta * 10
-    if (mesh.current.position.y < -10) {
-      mesh.current.position.set(
-        Math.random() * 20 - 10,
-        10,
-        Math.random() * 10 - 5
-      )
-    }
+    ref.current.rotation.x -= delta / 20
+    ref.current.rotation.y -= delta / 30
   })
 
   return (
-    <mesh ref={mesh} position={position}>
-      <sphereGeometry args={[0.1, 16, 16]} />
-      <meshBasicMaterial color="#ffffff" />
+    <group rotation={[0, 0, Math.PI / 4]}>
+      <Points ref={ref} positions={points} stride={3} frustumCulled={false}>
+        <PointMaterial
+          transparent
+          color="#ffffff"
+          size={0.02}
+          sizeAttenuation={true}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </Points>
+    </group>
+  )
+}
+
+function InvisiblePlanet() {
+  const ref = useRef()
+  useFrame((state) => {
+    ref.current.rotation.y += 0.001
+  })
+
+  return (
+    <mesh ref={ref} position={[3, -2, -5]}>
+      <sphereGeometry args={[2, 32, 32]} />
+      <meshBasicMaterial color="#000000" transparent opacity={0} />
     </mesh>
   )
 }
 
-function MeteorShower() {
+function Scene() {
   return (
-    <Canvas style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <Meteor key={i} position={[Math.random() * 20 - 10, Math.random() * 20 - 10, Math.random() * 10 - 5]} />
-      ))}
-    </Canvas>
+    <>
+      <color attach="background" args={["#000000"]} />
+      <Stars />
+      <InvisiblePlanet />
+      <ambientLight intensity={0.1} />
+      <pointLight position={[10, 10, 10]} intensity={0.5} />
+    </>
   )
 }
 
-export default function Home() {
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-    const audio = new Audio('/meteor-sound.mp3')
-    audio.loop = true
-    audio.volume = 0.1
-    audio.play().catch(error => console.log('Audio play failed:', error))
-    return () => {
-      audio.pause()
-    }
-  }, [])
-
-  if (!isMounted) {
-    return null
-  }
-
+function Button({ href, children }) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-black text-white relative overflow-hidden">
-      <StarryBackground />
-      <MeteorShower />
-      <div className="z-10 text-center">
-        <h1 className="text-6xl font-bold mb-4 animate-pulse">¡Hola Mundo!</h1>
-        <p className="text-xl mb-8">Acompáñanos a esta aventura</p>
-        <div className="space-x-4">
-          <Link href="/login">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
-              Login
-            </button>
-          </Link>
-          
-          <Link href="/register">
-            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
-              Register
-            </button>
-          </Link>
+    <Link href={href}>
+      <motion.button 
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300 shadow-lg"
+      >
+        {children}
+      </motion.button>
+    </Link>
+  )
+}
+
+export default function NASAGalaxyPortal() {
+  return (
+    <main className="relative w-full h-screen overflow-hidden bg-black text-white font-sans">
+      <Canvas className="absolute inset-0">
+        <Scene />
+      </Canvas>
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4">
+        <motion.h1 
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-6xl font-bold mb-4 text-white"
+        >
+          Explora el Cosmos
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="text-xl mb-12 text-gray-300"
+        >
+          Embárcate en un viaje interestelar
+        </motion.p>
+        <div className="space-x-6">
+          <Button href="/login">
+            Iniciar Sesión
+          </Button>
+          <Button href="/register">
+            Registrarse
+          </Button>
         </div>
       </div>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute bottom-4 left-4 text-gray-500 text-sm"
+      >
+        © {new Date().getFullYear()} Intolerantes al js
+      </motion.div>
     </main>
   )
 }
