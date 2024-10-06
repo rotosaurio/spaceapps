@@ -95,6 +95,8 @@ const Planetario = () => {
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [detailedView, setDetailedView] = useState(false);
+  const [shouldReturnToFullView, setShouldReturnToFullView] = useState(false);
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -160,7 +162,7 @@ const Planetario = () => {
 
     // Crear cinturón de asteroides
     const asteroidBelt = new THREE.Group();
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 400; i++) {
       const radius = Math.random() * 0.1 + 0.05;
       const geometry = new THREE.SphereGeometry(radius, 8, 8);
       const material = new THREE.MeshPhongMaterial({
@@ -196,18 +198,28 @@ const Planetario = () => {
     controls.enableZoom = true;
 
     const focusOnPlanet = (planet) => {
-      const distance = planet.position.distanceTo(new THREE.Vector3(0, 0, 0)) * 1.5;
-      const targetPosition = new THREE.Vector3().copy(planet.position).normalize().multiplyScalar(distance);
-      
+      const planetPosition = new THREE.Vector3();
+      planet.getWorldPosition(planetPosition);
+
+      const distance = planet.geometry.boundingSphere.radius * 3;
+      const targetPosition = new THREE.Vector3(0, 0, distance);
+
+      new TWEEN.Tween(planet.position)
+        .to({ x: 0, y: 0, z: 0 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
+
       new TWEEN.Tween(camera.position)
         .to(targetPosition, 1000)
         .easing(TWEEN.Easing.Quadratic.Out)
         .start();
 
       new TWEEN.Tween(controls.target)
-        .to(planet.position, 1000)
+        .to({ x: 0, y: 0, z: 0 }, 1000)
         .easing(TWEEN.Easing.Quadratic.Out)
         .start();
+
+      setDetailedView(true);
     };
 
     // Función de animación
@@ -273,6 +285,8 @@ const Planetario = () => {
 
     // Manejo de clics
     const handleClick = (event) => {
+      if (detailedView) return;
+
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
 
@@ -293,20 +307,9 @@ const Planetario = () => {
           setSelectedPlanet(planetData);
           setShowPopup(true);
 
-          // Enfocar y seguir al planeta
           const planet = scene.getObjectByName(planetName);
           if (planet) {
             focusOnPlanet(planet);
-
-            // Añadir brillo al planeta
-            const glow = new THREE.PointLight(0xffffff, 1, 10);
-            glow.position.copy(planet.position);
-            scene.add(glow);
-
-            // Eliminar el brillo después de 2 segundos
-            setTimeout(() => {
-              scene.remove(glow);
-            }, 2000);
           }
         }
       } else {
@@ -316,6 +319,22 @@ const Planetario = () => {
 
     currentMount.addEventListener('click', handleClick);
 
+    if (shouldReturnToFullView) {
+      new TWEEN.Tween(camera.position)
+        .to({ x: 0, y: 20, z: 30 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
+
+      new TWEEN.Tween(controls.target)
+        .to({ x: 0, y: 0, z: 0 }, 1000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
+
+      setDetailedView(false);
+      setShowPopup(false);
+      setShouldReturnToFullView(false);
+    }
+
     // Limpieza
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -323,7 +342,7 @@ const Planetario = () => {
       currentMount.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [isPaused]);
+  }, [isPaused, shouldReturnToFullView]);
 
   const handleLogout = async () => {
     try {
@@ -332,6 +351,10 @@ const Planetario = () => {
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
+  };
+
+  const returnToFullView = () => {
+    setShouldReturnToFullView(true);
   };
 
   return (
@@ -360,6 +383,14 @@ const Planetario = () => {
           </button>
         </Link>
       </div>
+      {detailedView && (
+        <button
+          onClick={returnToFullView}
+          className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Volver
+        </button>
+      )}
       <div style={{ position: 'absolute', right: '20px', bottom: '20px' }}>
         <FloatingButton />
       </div>
