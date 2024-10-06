@@ -20,23 +20,29 @@ export default function Foro() {
   const [contenido, setContenido] = useState('');
   const [categoria, setCategoria] = useState('');
   const [error, setError] = useState('');
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [editando, setEditando] = useState(null);
   const [busqueda, setBusqueda] = useState('');
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
   const [publicacionesPorCategoria, setPublicacionesPorCategoria] = useState({});
 
+  const displayName = session?.user?.name || 'Usuario Anónimo';
+
   useEffect(() => {
-    cargarPublicaciones();
-  }, []);
+    if (status === "unauthenticated") {
+      router.push('/login');
+    } else {
+      cargarPublicaciones();
+    }
+  }, [status, router]);
 
 
-  const cargarPublicaciones = async (cat = '') => {
+  const cargarPublicaciones = async () => {
     try {
-      const response = await axios.get(`/api/foro${cat ? `?categoria=${cat}` : ''}`);
+      const response = await axios.get('/api/foro');
       setPublicaciones(response.data);
       
       // Contar publicaciones por categoría
@@ -46,8 +52,7 @@ export default function Foro() {
       }, {});
       setPublicacionesPorCategoria(conteo);
     } catch (error) {
-      console.error("Error al cargar publicaciones:", error);
-      setError('Error al cargar publicaciones.');
+      console.error("Error al cargar las publicaciones:", error);
     }
   };
 
@@ -60,10 +65,8 @@ export default function Foro() {
       return;
     }
 
-    const nombreUsuario = session?.user?.name || 'Usuario Anónimo';
-
     try {
-      const data = { titulo, contenido, categoria, nombre: nombreUsuario };
+      const data = { titulo, contenido, categoria, nombre: displayName };
 
       if (editando) {
         await axios.put(`/api/foro?id=${editando._id}`, data);
@@ -154,7 +157,7 @@ export default function Foro() {
           <img src="/Logo cosmoXplora.png" alt="Logo CosmoXplora" className="w-full h-full object-contain" />
         </div>
         <div className="flex items-center">
-          <span className="text-white mr-4">{session?.user?.name || 'Usuario Anónimo'}</span>
+          <span className="text-white mr-4">{displayName}</span>
           <button 
             onClick={toggleDropdown}
             className="text-white focus:outline-none"

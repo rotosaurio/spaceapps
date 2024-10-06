@@ -11,6 +11,7 @@ export default NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+    // ... otros proveedores
   ],
   adapter: MongoDBAdapter(clientPromise),
   secret: process.env.NEXTAUTH_SECRET,
@@ -24,10 +25,9 @@ export default NextAuth({
         const client = await clientPromise;
         const db = client.db();
         const usuariosCollection = db.collection("usuarios");
-
+        // Buscar si el usuario ya existe en la colección 'usuarios'
         // Buscar si el usuario ya existe en la colección 'usuarios'
         const existingUser = await usuariosCollection.findOne({ correo: email });
-
         if (existingUser) {
           if (!existingUser.oauth) {
             // Vincular la cuenta OAuth con el usuario existente
@@ -41,7 +41,7 @@ export default NextAuth({
         } else {
           // Encriptar la contraseña (utilizando el correo electrónico)
           const hashedPassword = await bcrypt.hash(email, 10); // 10 es el número de saltos
-
+          // Insertar nuevo usuario en la colección 'usuarios'
           // Insertar nuevo usuario en la colección 'usuarios'
           const result = await usuariosCollection.insertOne({
             correo: email,
@@ -49,7 +49,7 @@ export default NextAuth({
             contraseña: hashedPassword, // Contraseña encriptada
             oauth: true,
           });
-
+          // Asignar el _id del nuevo usuario para usarlo en el token
           // Asignar el _id del nuevo usuario para usarlo en el token
           user.usuarioId = result.insertedId;
         }
