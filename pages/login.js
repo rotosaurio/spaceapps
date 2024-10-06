@@ -190,7 +190,7 @@ export default function Login() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <img src="/google.png" alt="Google" className="w-6 h-6 mr-2" />
+                  <img src="/google.png" alt="Google" className="w-14 h-10 mr-2" />
                   Google
                 </motion.button>
               </div>

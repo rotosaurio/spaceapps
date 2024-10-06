@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
@@ -89,7 +89,7 @@ export default function Noticias() {
           setStatus('unauthenticated');
         }
       } catch (error) {
-        console.error("Error checking session:", error);
+        console.error("Error al verificar la sesión:", error);
         setStatus('unauthenticated');
       }
     };
@@ -180,7 +180,7 @@ export default function Noticias() {
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      {/* Top Navigation */}
+      {/* Navegación superior */}
       <nav className="bg-gray-900 py-4 px-6 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors">
           CosmoXplora
@@ -200,7 +200,7 @@ export default function Noticias() {
         </div>
       </nav>
 
-      {/* Main content */}
+      {/* Contenido principal */}
       <div className="flex-1 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Canvas>

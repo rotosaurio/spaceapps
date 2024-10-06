@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 import { motion } from 'framer-motion';
+import { signIn, useSession } from "next-auth/react";
 
 function Stars({ count = 5000 }) {
   const points = useMemo(() => {
@@ -69,6 +70,9 @@ export default function Register() {
   const [contraseña, setContraseña] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  
+  // Aquí es donde definimos status
+  const { data: session, status } = useSession();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -103,6 +107,20 @@ export default function Register() {
 
   const rightImage = process.env.NEXT_PUBLIC_RIGHT_IMAGE || '/rocket.png';
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push('/noticias');
+    }
+  }, [status, router]);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn("google", { callbackUrl: "/noticias" });
+    } catch (error) {
+      setError("Error al iniciar sesión con Google");
+    }
+  };
+
   return (
     <main className="relative w-full h-screen overflow-hidden bg-black text-white font-sans">
       <Canvas className="absolute inset-0">
@@ -122,13 +140,13 @@ export default function Register() {
               Registro
             </h1>
             {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-8" onSubmit={handleSubmit}>
               <div>
                 <input 
                   type="text" 
                   placeholder="Nombre de usuario" 
                   required 
-                  className="w-full px-4 py-3 bg-white bg-opacity-10 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300 text-white"
+                  className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
                 />
@@ -138,7 +156,7 @@ export default function Register() {
                   type="email" 
                   placeholder="Correo electrónico" 
                   required 
-                  className="w-full px-4 py-3 bg-white bg-opacity-10 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300 text-white"
+                  className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
                   value={correo}
                   onChange={(e) => setCorreo(e.target.value)}
                 />
@@ -148,22 +166,34 @@ export default function Register() {
                   type="password" 
                   placeholder="Contraseña" 
                   required 
-                  className="w-full px-4 py-3 bg-white bg-opacity-10 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300 text-white"
+                  className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
                   value={contraseña}
                   onChange={(e) => setContraseña(e.target.value)}
                 />
               </div>
-              <div>
-                <button 
+              <div className="mt-8 flex space-x-4">
+                <motion.button 
                   type="submit" 
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 text-lg font-semibold"
+                  className="flex-1 bg-[#5D6C8C] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Registrarse
-                </button>
+                </motion.button>
+                <motion.button 
+                  type="button" 
+                  onClick={handleGoogleSignIn}
+                  className="flex-1 bg-[#5D6C8C] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide flex items-center justify-center"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <img src="/google.png" alt="Google" className="w-14 h-10 mr-2" />
+                  Google
+                </motion.button>
               </div>
             </form>
             <div className="mt-6 text-center">
-              <a href="/login" className="text-blue-400 hover:text-blue-300 transition duration-300">
+              <a href="/login" className="text-white-200 hover:text-blue-300 transition duration-300">
                 ¿Ya tienes una cuenta? Inicia sesión
               </a>
             </div>
