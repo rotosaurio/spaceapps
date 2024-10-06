@@ -384,12 +384,14 @@ const Planetario = () => {
         </Link>
       </div>
       {detailedView && (
+        
         <button
           onClick={returnToFullView}
-          className="absolute top-4 left-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded z-10"
-        >
-          Volver
+          className="absolute top-4 left-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded z-10">
+            <Link href="/noticias" className="text-lg text-white hover:text-blue-400 transition-colors">Volver</Link>
+          
         </button>
+        
       )}
       <div style={{ position: 'absolute', left: '600px', bottom: '40px' }}>
   <FloatingButton />
