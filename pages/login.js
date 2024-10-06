@@ -219,14 +219,27 @@ export default function Login() {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent 
-                  text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none 
-                  focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              <button 
+                type="submit" 
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mb-4"
               >
                 Iniciar Sesión
               </button>
+
+              <button 
+                type="button" 
+                onClick={() => signIn('google')}
+                className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 mb-4"
+              >
+                Iniciar Sesión con Google
+              </button>
+
+              <p className="text-center text-white">
+                ¿No tienes una cuenta? 
+                <Link href="/register" className="text-blue-400 hover:text-blue-300 ml-1">
+                  Regístrate aquí
+                </Link>
+              </p>
             </div>
           </form>
           {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}

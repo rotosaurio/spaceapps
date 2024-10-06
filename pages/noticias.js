@@ -6,6 +6,8 @@ export default function Noticias() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  const displayName = session?.user?.name || 'Usuario Anónimo';
+
   const handleLogout = async () => {
     try {
       localStorage.removeItem('token');
@@ -43,7 +45,7 @@ export default function Noticias() {
           <img src="/Logo cosmoXplora.png" alt="Logo CosmoXplora" className="w-full h-full object-contain" />
         </div>
         <div className="flex items-center">
-          <span className="text-white mr-4">{session?.user?.name || 'Usuario Anónimo'}</span>
+          <span className="text-white mr-4">{displayName}</span>
           <button 
             onClick={handleLogout}
             className="text-white bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded"
