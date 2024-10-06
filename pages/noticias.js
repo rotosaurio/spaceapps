@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { signOut, useSession } from "next-auth/react";
+import FloatingButton from '../components/FloatingButton';
 
 export default function Noticias() {
   const router = useRouter();
