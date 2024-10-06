@@ -5,22 +5,22 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from "next-auth/react";
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Points, PointMaterial } from '@react-three/drei'
-import * as THREE from 'three'
-import { motion } from 'framer-motion'
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Points, PointMaterial } from '@react-three/drei';
+import * as THREE from 'three';
+import { motion } from 'framer-motion';
 
 function Stars({ count = 5000 }) {
   const points = useMemo(() => {
-    const p = new Array(count).fill().map(() => (Math.random() - 0.5) * 20)
-    return new Float32Array(p)
-  }, [count])
+    const p = new Array(count).fill().map(() => (Math.random() - 0.5) * 20);
+    return new Float32Array(p);
+  }, [count]);
 
-  const ref = useRef()
+  const ref = useRef();
   useFrame((state, delta) => {
-    ref.current.rotation.x -= delta / 20
-    ref.current.rotation.y -= delta / 30
-  })
+    ref.current.rotation.x -= delta / 20;
+    ref.current.rotation.y -= delta / 30;
+  });
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
@@ -35,21 +35,21 @@ function Stars({ count = 5000 }) {
         />
       </Points>
     </group>
-  )
+  );
 }
 
 function InvisiblePlanet() {
-  const ref = useRef()
+  const ref = useRef();
   useFrame((state) => {
-    ref.current.rotation.y += 0.001
-  })
+    ref.current.rotation.y += 0.001;
+  });
 
   return (
     <mesh ref={ref} position={[3, -2, -5]}>
       <sphereGeometry args={[2, 32, 32]} />
       <meshBasicMaterial color="#000000" transparent opacity={0} />
     </mesh>
-  )
+  );
 }
 
 function Scene() {
@@ -61,7 +61,7 @@ function Scene() {
       <ambientLight intensity={0.1} />
       <pointLight position={[10, 10, 10]} intensity={0.5} />
     </>
-  )
+  );
 }
 
 export default function Login() {
@@ -93,16 +93,25 @@ export default function Login() {
     setError('');
 
     try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: correo,
-        password: contraseña,
+      const response = await fetch('/api/autenticacion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'login',
+          correo,
+          contraseña,
+        }),
       });
 
-      if (result.error) {
-        setError(result.error);
-      } else {
+      const data = await response.json();
+
+      if (response.ok) {
+        // Redirigir a la página de noticias si el inicio de sesión es exitoso
         router.push('/noticias');
+      } else {
+        setError(data.error || 'Error en el inicio de sesión');
       }
     } catch (error) {
       console.error('Error:', error);

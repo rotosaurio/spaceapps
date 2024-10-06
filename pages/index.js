@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -61,13 +61,19 @@ function Scene() {
   )
 }
 
-function Button({ href, children }) {
+function Button({ href, children, variant = "default" }) {
+  const baseClasses = "px-8 py-3 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg"
+  const variantClasses = {
+    default: "bg-white text-black hover:bg-gray-200",
+    outline: "bg-transparent text-white border-2 border-white hover:bg-white hover:text-black"
+  }
+
   return (
-    <Link href={href}>
+    <Link href={href} passHref>
       <motion.button 
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="px-8 py-3 bg-white text-black text-lg font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300 shadow-lg"
+        className={`${baseClasses} ${variantClasses[variant]}`}
       >
         {children}
       </motion.button>
@@ -99,12 +105,20 @@ export default function NASAGalaxyPortal() {
         >
           Embárcate en un viaje interestelar
         </motion.p>
-        <div className="space-x-6">
-          <Button href="/login">
-            Iniciar Sesión
+        <div className="space-y-4 flex flex-col items-center">
+          <div className="space-x-6">
+            <Button href="/login">
+              Iniciar Sesión
+            </Button>
+            <Button href="/register">
+              Registrarse
+            </Button>
+          </div>
+          <Button href="/guest-login" variant="outline">
+            Acceso de Invitado
           </Button>
-          <Button href="/register">
-            Registrarse
+          <Button href="/team-page" variant="outline">
+            Nuestro Equipo
           </Button>
         </div>
       </div>
