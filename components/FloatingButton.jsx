@@ -9,7 +9,7 @@ const FloatingButton = () => {
     <>
       {isChatOpen && <ChatWindow onClose={() => setIsChatOpen(false)} />}
       <button
-        className={`fixed bottom-6 right-6 bg-[#5D6C8C] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none z-50 group ${
+        className={`fixed bottom-6 right-20 bg-[#5D6C8C] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none z-50 group ${
             isHovered ? 'scale-110' : ''
           }`}
         aria-label="Asistencia"

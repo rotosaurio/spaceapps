@@ -361,8 +361,8 @@ const Planetario = () => {
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
       {showPopup && selectedPlanet && (
-        <div className="absolute top-20 right-4 bg-gray-200 p-4 rounded-lg shadow-lg max-w-md">
-          <h2 className="text-xl font-bold mb-2">{selectedPlanet.name}</h2>
+        <div className="absolute top-20 right-4 bg-[#5D6C8C] bg-opacity-50 p-4 rounded-lg shadow-lg max-w-md text-white">
+          <h2 className="text-2xl font-bold mb-2">{selectedPlanet.name}</h2>
           <p className="mb-2">{selectedPlanet.description}</p>
           <p><strong>Diámetro:</strong> {selectedPlanet.diameter}</p>
           <p><strong>Distancia del Sol:</strong> {selectedPlanet.distanceFromSun}</p>
@@ -373,7 +373,7 @@ const Planetario = () => {
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
         <button
           onClick={() => setIsPaused(!isPaused)}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
         >
           {isPaused ? 'Reanudar' : 'Pausar'}
         </button>
@@ -386,14 +386,14 @@ const Planetario = () => {
       {detailedView && (
         <button
           onClick={returnToFullView}
-          className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="absolute top-4 left-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded z-10"
         >
           Volver
         </button>
       )}
-      <div style={{ position: 'absolute', right: '20px', bottom: '20px' }}>
-        <FloatingButton />
-      </div>
+      <div style={{ position: 'absolute', left: '600px', bottom: '40px' }}>
+  <FloatingButton />
+    </div>
     </div>
   );
 };
