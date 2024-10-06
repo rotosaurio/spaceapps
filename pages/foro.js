@@ -206,21 +206,8 @@ export default function Foro() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-3/4">
-            <h2 className="text-2xl font-bold text-white mb-4">Featured</h2>
-            {publicaciones.length === 0 ? (
-              <p className="text-gray-400">No hay publicaciones para mostrar.</p>
-            ) : (
-              publicaciones.slice(0, 3).map(pub => (
-                <div key={pub._id} className="mb-4 p-4 bg-gray-800 bg-opacity-50 rounded-lg">
-                  <h3 className="text-xl font-bold text-white mb-1">{pub.titulo}</h3>
-                  <p className="text-gray-400">{pub.contenido.substring(0, 100)}...</p>
-                  <p className="text-sm text-gray-500 mt-2">Publicado por: {pub.nombre}</p>
-                </div>
-              ))
-            )}
-            
             {mostrarFormulario && (
-              <form onSubmit={manejarPublicacion} className="mt-8 bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+              <form onSubmit={manejarPublicacion} className="mb-8 bg-gray-800 bg-opacity-50 p-6 rounded-lg">
                 <h2 className="text-2xl font-bold text-white mb-4">{editando ? "Editar publicación" : "Nueva publicación"}</h2>
                 <div className="mb-4">
                   <input
@@ -274,6 +261,19 @@ export default function Foro() {
                   )}
                 </div>
               </form>
+            )}
+            
+            <h2 className="text-2xl font-bold text-white mb-4">Featured</h2>
+            {publicaciones.length === 0 ? (
+              <p className="text-gray-400">No hay publicaciones para mostrar.</p>
+            ) : (
+              publicaciones.slice(0, 3).map(pub => (
+                <div key={pub._id} className="mb-4 p-4 bg-gray-800 bg-opacity-50 rounded-lg">
+                  <h3 className="text-xl font-bold text-white mb-1">{pub.titulo}</h3>
+                  <p className="text-gray-400">{pub.contenido.substring(0, 100)}...</p>
+                  <p className="text-sm text-gray-500 mt-2">Publicado por: {pub.nombre}</p>
+                </div>
+              ))
             )}
           </div>
 

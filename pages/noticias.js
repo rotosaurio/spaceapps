@@ -134,42 +134,48 @@ export default function Noticias() {
       titulo: "Nuevos descubrimientos en Marte con el Perseverance",
       contenido: "El rover Perseverance ha encontrado evidencias de rocas ígneas en el cráter Jezero de Marte, sugiriendo actividad volcánica pasada. Estos hallazgos son cruciales para entender la historia geológica del planeta y la posible existencia de vida antigua.",
       fecha: "2024-10-15",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-pia24836_perseverance_selfie_at_rochette-rVzigUbWWcCmFrjoj5pObaaqNHMKDt.jpg"
+      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-pia24836_perseverance_selfie_at_rochette-rVzigUbWWcCmFrjoj5pObaaqNHMKDt.jpg",
+      link: "https://science.nasa.gov/mission/mars-2020-perseverance/"
     },
     {
       id: 2,
       titulo: "Erupción solar masiva del 3 de octubre de 2024",
       contenido: "La NASA capturó una erupción solar de clase X9.0, una de las más poderosas, que podría afectar las comunicaciones y redes eléctricas en la Tierra. Esta actividad solar es estudiada para comprender mejor el comportamiento del Sol.",
       fecha: "2024-10-03",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SDO_10-03-24_1219UTC_131-171_RedScreen_Band-nkDO7FntBaawwMr9YX8ZZI6fx6aYVY.jpg"
+      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SDO_10-03-24_1219UTC_131-171_RedScreen_Band-nkDO7FntBaawwMr9YX8ZZI6fx6aYVY.jpg",
+      link: "https://svs.gsfc.nasa.gov/4906"
     },
     {
       id: 3,
       titulo: "Lanzamiento de la misión Europa Clipper",
       contenido: "La NASA se prepara para lanzar la misión Europa Clipper en 2024, que explorará la luna Europa de Júpiter. Se espera que esta misión estudie su océano subterráneo y las posibilidades de vida en sus aguas saladas.",
       fecha: "2024-09-20",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ksc-20230920-ph-kls01-0126large-L0SB2ZxV7yxIUJIbMVKrowuKxteb6d.jpg"
+      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ksc-20230920-ph-kls01-0126large-L0SB2ZxV7yxIUJIbMVKrowuKxteb6d.jpg",
+      link: "https://science.nasa.gov/mission/europa-clipper/"
     },
     {
       id: 4,
       titulo: "Continúa la misión Artemis hacia la Luna",
       contenido: "Las misiones Artemis están en marcha para devolver a los humanos a la Luna en esta década. Esta iniciativa ayudará a preparar el camino para la exploración humana de Marte y otros destinos del sistema solar.",
       fecha: "2024-09-10",
-      imagen: "https://images-assets.nasa.gov/image/KSC-20220316-PH-KLS01_0308/KSC-20220316-PH-KLS01_0308~medium.jpg"
+      imagen: "https://images-assets.nasa.gov/image/KSC-20220316-PH-KLS01_0308/KSC-20220316-PH-KLS01_0308~medium.jpg",
+      link: "https://www.nasa.gov/humans-in-space/artemis/"
     },
     {
       id: 5,
       titulo: "El telescopio James Webb encuentra moléculas complejas en exoplanetas",
       contenido: "El telescopio espacial James Webb ha descubierto por primera vez en la atmósfera de exoplanetas moléculas complejas como el metano y el dióxido de carbono, lo que podría ser indicativo de procesos químicos que apoyen la vida. Esta imagen muestra la impresionante vista de la Nebulosa de Orión capturada por el telescopio, demostrando su capacidad para observar objetos celestes en diferentes longitudes de onda.",
       fecha: "2024-08-25",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/new-a-ch3-mirim-nircam-collage-cc-gbv2-jpg-1LcOgwk4DFrAsPwkN03JNLmD29e8Nd.jpg"
+      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/new-a-ch3-mirim-nircam-collage-cc-gbv2-jpg-1LcOgwk4DFrAsPwkN03JNLmD29e8Nd.jpg",
+      link: "https://science.nasa.gov/mission/webb/"
     },
     {
       id: 6,
       titulo: "La NASA explora las posibles causas de la misteriosa pérdida de energía en Voyager 2",
       contenido: "La sonda Voyager 2 ha experimentado una pérdida de energía inesperada. Los ingenieros de la NASA están trabajando para optimizar su uso de energía y continuar con la misión de estudiar los confines del sistema solar.",
       fecha: "2024-08-15",
-      imagen: "https://photojournal.jpl.nasa.gov/jpegMod/PIA17049_modest.jpg"
+      imagen: "https://photojournal.jpl.nasa.gov/jpegMod/PIA17049_modest.jpg",
+      link: "https://science.nasa.gov/mission/voyager"
     }
   ];
 
@@ -235,9 +241,19 @@ export default function Noticias() {
                   <div className="p-6">
                     <h2 className="text-xl font-bold mb-3 text-blue-400">{noticia.titulo}</h2>
                     <p className="text-gray-300 mb-4 line-clamp-3">{noticia.contenido}</p>
-                    <div className="flex items-center text-sm text-gray-400">
-                      <CalendarIcon />
-                      <span>{noticia.fecha}</span>
+                    <div className="flex items-center justify-between text-sm text-gray-400">
+                      <div className="flex items-center">
+                        <CalendarIcon />
+                        <span>{noticia.fecha}</span>
+                      </div>
+                      <a 
+                        href={noticia.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-blue-400 hover:text-blue-300 transition-colors"
+                      >
+                        Más información
+                      </a>
                     </div>
                   </div>
                 </motion.div>
