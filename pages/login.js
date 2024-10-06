@@ -39,16 +39,8 @@ export default function Login() {
         password: contraseña,
       });
 
-<<<<<<< HEAD
-      if (result.error) {
-        setError(result.error);
-      } else {
-        router.push('/noticias');
-      }
-=======
       localStorage.setItem('token', response.data.token);
       router.push('/noticias');
->>>>>>> a42d36a3e899fb0e1822134ab1dffeba27800e19
     } catch (error) {
       console.error('Error:', error);
       setError('Error en el servidor');
