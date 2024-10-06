@@ -13,7 +13,6 @@ const categorias = [
   "Astrophysics"
 ];
 
-
 export default function Foro() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [titulo, setTitulo] = useState('');
@@ -33,12 +32,11 @@ export default function Foro() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push('/login');
+      // router.push('/login'); // Eliminar esta línea
     } else {
       cargarPublicaciones();
     }
   }, [status, router]);
-
 
   const cargarPublicaciones = async () => {
     try {
@@ -88,7 +86,6 @@ export default function Foro() {
       setError(error.response?.data?.error || 'Error al gestionar la publicación.');
     }
   };
-
 
   const handleEditar = (pub) => {
     setEditando(pub);
