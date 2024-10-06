@@ -65,14 +65,21 @@ export default function Noticias() {
             </div>
           ))}
         </div>
-        <div className="mt-8 text-center">
+        <div className="flex justify-center space-x-4 mt-20">
           <Link href="/foro">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button className="bg-[#5D6C8C]/80 hover:bg-[#5D6C8C]/90 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
               Ir al Foro
             </button>
           </Link>
+          
+          <Link href="/planetario">
+            <button className="bg-[#5D6C8C]/80 hover:bg-[#5D6C8C]/90 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 ">
+              {('Planetario')}
+            </button>
+          </Link>
+        </div>
         </div>
       </div>
-    </div>
+    
   );
 }
