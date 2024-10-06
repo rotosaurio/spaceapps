@@ -76,9 +76,12 @@ export default function Home() {
               Login
             </button>
           </Link>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
-            Register
-          </button>
+          
+          <Link href="/register">
+            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
+              Register
+            </button>
+          </Link>
         </div>
       </div>
     </main>
