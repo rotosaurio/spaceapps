@@ -361,7 +361,7 @@ const Planetario = () => {
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
       {showPopup && selectedPlanet && (
-        <div className="absolute top-20 right-4 bg-gray-800 p-4 rounded-lg shadow-lg max-w-md">
+        <div className="absolute top-20 right-4 bg-gray-200 p-4 rounded-lg shadow-lg max-w-md">
           <h2 className="text-xl font-bold mb-2">{selectedPlanet.name}</h2>
           <p className="mb-2">{selectedPlanet.description}</p>
           <p><strong>Diámetro:</strong> {selectedPlanet.diameter}</p>
