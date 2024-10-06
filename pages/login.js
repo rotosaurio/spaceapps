@@ -129,7 +129,7 @@ export default function Login() {
   const rightImage = process.env.NEXT_PUBLIC_RIGHT_IMAGE || '/astro.png';
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black text-white font-sans">
+    <div className="relative w-full min-h-screen overflow-hidden bg-black text-white font-sans">
       <Canvas className="absolute inset-0">
         <Scene />
       </Canvas>
@@ -140,26 +140,25 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="absolute inset-0 flex z-10">
-        <main className="w-2/3 p-8 pr-24 flex items-center">
-          <div className="w-full max-w-2x1">
+      <div className="absolute inset-0 flex flex-col lg:flex-row z-10">
+        <main className="w-full lg:w-2/3 p-4 sm:p-8 flex items-center justify-center">
+          <div className="w-full max-w-md">
             <motion.h1 
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="text-6xl font-bold text-white mb-12 drop-shadow-lg tracking-wider"
-              style={{ textIndent: '3em' }}
+              className="text-4xl sm:text-5xl font-bold text-white mb-8 text-center lg:text-left"
             >
               Iniciar Sesión
             </motion.h1>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <form className="space-y-8" onSubmit={handleSubmit}>
+            {error && <p className="text-red-500 mb-4 text-center lg:text-left">{error}</p>}
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <input 
                   type="email" 
                   placeholder="Correo electrónico" 
                   required 
-                  className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
+                  className="w-full bg-[#151626] text-white py-3 px-4 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-base sm:text-lg"
                   value={correo}
                   onChange={(e) => setCorreo(e.target.value)}
                 />
@@ -169,15 +168,15 @@ export default function Login() {
                   type="password" 
                   placeholder="Contraseña" 
                   required 
-                  className="w-full bg-[#151626] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
+                  className="w-full bg-[#151626] text-white py-3 px-4 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-base sm:text-lg"
                   value={contraseña}
                   onChange={(e) => setContraseña(e.target.value)}
                 />
               </div>
-              <div className="mt-8 flex space-x-4">
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <motion.button 
                   type="submit" 
-                  className="flex-1 bg-[#5D6C8C] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide"
+                  className="flex-1 bg-[#5D6C8C] text-white py-2 px-4 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-base sm:text-lg font-semibold"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -186,11 +185,11 @@ export default function Login() {
                 <motion.button 
                   type="button" 
                   onClick={handleGoogleSignIn}
-                  className="flex-1 bg-[#5D6C8C] text-white py-2 px-8 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-lg font-semibold tracking-wide flex items-center justify-center"
+                  className="flex-1 bg-[#5D6C8C] text-white py-2 px-4 rounded-full hover:bg-[#4A5670] focus:outline-none focus:ring-2 focus:ring-[#5D6C8C] focus:ring-opacity-50 transition duration-300 text-base sm:text-lg font-semibold flex items-center justify-center"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <img src="/google.png" alt="Google" className="w-14 h-10 mr-2" />
+                  <img src="/google.png" alt="Google" className="w-6 h-6 mr-2" />
                   Google
                 </motion.button>
               </div>
@@ -198,7 +197,7 @@ export default function Login() {
           </div>
         </main>
 
-        <div className="w-1/2 flex items-center justify-center p-8">
+        <div className="hidden lg:flex w-1/2 items-center justify-center p-8">
           <motion.div 
             className="relative w-full h-full"
             style={{ 

@@ -63,7 +63,7 @@ function Scene() {
 }
 
 function Button({ href, children, variant = "default", onClick }) {
-  const baseClasses = "px-8 py-3 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg"
+  const baseClasses = "px-4 sm:px-8 py-2 sm:py-3 text-base sm:text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg"
   const variantClasses = {
     default: "bg-white text-black hover:bg-gray-200",
     outline: "bg-transparent text-white border-2 border-white hover:bg-white hover:text-black"
@@ -109,12 +109,12 @@ export default function NASAGalaxyPortal() {
         <Scene />
       </Canvas>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 sm:px-6 lg:px-8">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-6xl font-bold mb-4 text-white"
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-white text-center"
         >
           CosmoXplora
         </motion.h1>
@@ -122,7 +122,7 @@ export default function NASAGalaxyPortal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
-          className="text-xl mb-12 text-gray-300"
+          className="text-base sm:text-lg mb-12 text-gray-300"
         >
           Embárcate en un viaje interestelar
         </motion.p>

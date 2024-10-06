@@ -187,21 +187,23 @@ export default function Noticias() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       {/* Navegación superior */}
-      <nav className="bg-gray-900 py-4 px-6 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors">
-          CosmoXplora
-        </Link>
-        <div className="flex items-center space-x-6">
-          <Link href="/planetario" className="text-lg text-white hover:text-blue-400 transition-colors">Planetario</Link>
-          <Link href="/foro" className="text-lg text-white hover:text-blue-400 transition-colors">Foro</Link>
-          <div className="flex items-center space-x-4">
-            <span className="text-white">{displayName}</span>
-            <button 
-              onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
-            >
-              {isGuest ? 'Salir' : 'Cerrar Sesión'}
-            </button>
+      <nav className="bg-gray-900 py-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center">
+          <Link href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors mb-4 sm:mb-0">
+            CosmoXplora
+          </Link>
+          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <Link href="/planetario" className="text-lg text-white hover:text-blue-400 transition-colors">Planetario</Link>
+            <Link href="/foro" className="text-lg text-white hover:text-blue-400 transition-colors">Foro</Link>
+            <div className="flex items-center space-x-4">
+              <span className="text-white">{displayName}</span>
+              <button 
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
+              >
+                {isGuest ? 'Salir' : 'Cerrar Sesión'}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -214,9 +216,9 @@ export default function Noticias() {
           </Canvas>
         </div>
         <div className="relative z-10 min-h-screen flex flex-col">
-          <div className="flex-grow container mx-auto px-4 py-8 overflow-y-auto">
-            <h1 className="text-5xl font-bold mb-12 text-center text-white">Noticias del Cosmos</h1>
-            <div className="max-w-md mx-auto mb-12">
+          <div className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 text-center text-white">Noticias del Cosmos</h1>
+            <div className="max-w-md mx-auto mb-8 sm:mb-12">
               <div className="relative">
                 <input 
                   type="text" 
@@ -225,10 +227,10 @@ export default function Noticias() {
                   value={filtro}
                   onChange={(e) => setFiltro(e.target.value)}
                 />
-                <SearchIcon />
+                <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {filteredNoticias.map((noticia) => (
                 <motion.div 
                   key={noticia.id} 
@@ -238,12 +240,12 @@ export default function Noticias() {
                   transition={{ duration: 0.5 }}
                 >
                   <img src={noticia.imagen} alt={noticia.titulo} className="w-full h-48 object-cover" />
-                  <div className="p-6">
-                    <h2 className="text-xl font-bold mb-3 text-blue-400">{noticia.titulo}</h2>
-                    <p className="text-gray-300 mb-4 line-clamp-3">{noticia.contenido}</p>
-                    <div className="flex items-center justify-between text-sm text-gray-400">
-                      <div className="flex items-center">
-                        <CalendarIcon />
+                  <div className="p-4 sm:p-6">
+                    <h2 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-blue-400">{noticia.titulo}</h2>
+                    <p className="text-sm sm:text-base text-gray-300 mb-3 sm:mb-4 line-clamp-3">{noticia.contenido}</p>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-400">
+                      <div className="flex items-center mb-2 sm:mb-0">
+                        <CalendarIcon className="mr-2" />
                         <span>{noticia.fecha}</span>
                       </div>
                       <a 

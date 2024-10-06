@@ -149,12 +149,12 @@ export default function Foro() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="bg-black py-4 px-4 flex justify-between items-center">
-        <div className="w-96 h-24">
+      <div className="bg-black py-4 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center">
+        <div className="w-full sm:w-auto h-16 sm:h-24 mb-4 sm:mb-0">
           <img src="/Logo cosmoXplora.png" alt="Logo CosmoXplora" className="w-full h-full object-contain" />
         </div>
-        <div className="flex items-center">
-          <span className="text-white mr-4">{displayName}</span>
+        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <span className="text-white">{displayName}</span>
           <button 
             onClick={toggleDropdown}
             className="text-white focus:outline-none"

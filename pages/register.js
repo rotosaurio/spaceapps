@@ -122,7 +122,7 @@ export default function Register() {
   };
 
   return (
-    <main className="relative w-full h-screen overflow-hidden bg-black text-white font-sans">
+    <main className="relative w-full min-h-screen overflow-hidden bg-black text-white font-sans">
       <Canvas className="absolute inset-0">
         <Scene />
       </Canvas>
@@ -134,13 +134,13 @@ export default function Register() {
       </Head>
 
       <div className="absolute inset-0 flex flex-col md:flex-row z-10">
-        <div className="w-full md:w-1/2 p-8 flex items-center justify-center">
+        <div className="w-full md:w-1/2 p-4 sm:p-8 flex items-center justify-center">
           <div className="w-full max-w-md">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 sm:mb-8 text-center md:text-left">
               Registro
             </h1>
-            {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-            <form className="space-y-8" onSubmit={handleSubmit}>
+            {error && <p className="text-red-500 mb-4 text-center md:text-left">{error}</p>}
+            <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <input 
                   type="text" 
