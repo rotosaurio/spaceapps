@@ -10,17 +10,32 @@ export default async function handler(req, res) {
 
     const { method, query } = req;
 
-    if (method === 'POST') {
-      const { titulo, contenido, nombre } = req.body;
+    if (method === 'GET') {
+      const { nombre, categoria } = query;
+      let filtro = {};
 
-      if (!titulo || !contenido || !nombre) {
-        return res.status(400).json({ error: "El título, contenido y nombre son requeridos." });
+      if (nombre) {
+        filtro.nombre = { $regex: nombre, $options: 'i' };
+      }
+
+      if (categoria) {
+        filtro.categoria = categoria;
+      }
+
+      const publicaciones = await foroCollection.find(filtro).sort({ fecha: -1 }).toArray();
+      res.status(200).json(publicaciones);
+    } else if (method === 'POST') {
+      const { titulo, contenido, nombre, categoria } = req.body;
+
+      if (!titulo || !contenido || !nombre || !categoria) {
+        return res.status(400).json({ error: "El título, contenido, nombre y categoría son requeridos." });
       }
 
       const nuevaPublicacion = {
         nombre,
         titulo,
         contenido,
+        categoria,
         fecha: new Date(),
       };
 
@@ -33,25 +48,12 @@ export default async function handler(req, res) {
           ...nuevaPublicacion 
         } 
       });
-    } else if (method === 'GET') {
-      const { nombre } = query;
-      let publicaciones;
-
-      if (nombre) {
-        publicaciones = await foroCollection.find({
-          nombre: { $regex: nombre, $options: 'i' }
-        }).sort({ fecha: -1 }).toArray();
-      } else {
-        publicaciones = await foroCollection.find().sort({ fecha: -1 }).toArray();
-      }
-
-      res.status(200).json(publicaciones);
     } else if (method === 'PUT') {
       const { id } = query;
-      const { titulo, contenido, nombre } = req.body;
+      const { titulo, contenido, nombre, categoria } = req.body;
 
-      if (!id || !titulo || !contenido || !nombre) {
-        return res.status(400).json({ error: "ID, título, contenido y nombre son requeridos." });
+      if (!id || !titulo || !contenido || !nombre || !categoria) {
+        return res.status(400).json({ error: "ID, título, contenido, nombre y categoría son requeridos." });
       }
 
       const publicacion = await foroCollection.findOne({ _id: new ObjectId(id) });
@@ -65,7 +67,7 @@ export default async function handler(req, res) {
 
       await foroCollection.updateOne(
         { _id: new ObjectId(id) },
-        { $set: { titulo, contenido, fecha: new Date() } }
+        { $set: { titulo, contenido, categoria, fecha: new Date() } }
       );
 
       res.status(200).json({ message: "Publicación actualizada exitosamente" });
@@ -89,7 +91,7 @@ export default async function handler(req, res) {
       await foroCollection.deleteOne({ _id: new ObjectId(id) });
       res.status(200).json({ message: "Publicación eliminada exitosamente" });
     } else {
-      res.setHeader('Allow', ['POST', 'GET', 'PUT', 'DELETE']);
+      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
       res.status(405).end(`Método ${method} no permitido`);
     }
   } catch (error) {
