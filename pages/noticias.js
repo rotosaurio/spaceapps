@@ -155,7 +155,7 @@ export default function Noticias() {
       titulo: "Continúa la misión Artemis hacia la Luna",
       contenido: "Las misiones Artemis están en marcha para devolver a los humanos a la Luna en esta década. Esta iniciativa ayudará a preparar el camino para la exploración humana de Marte y otros destinos del sistema solar.",
       fecha: "2024-09-10",
-      imagen: "/placeholder.svg?height=300&width=400"
+      imagen: "https://images-assets.nasa.gov/image/KSC-20220316-PH-KLS01_0308/KSC-20220316-PH-KLS01_0308~medium.jpg"
     },
     {
       id: 5,
@@ -169,7 +169,7 @@ export default function Noticias() {
       titulo: "La NASA explora las posibles causas de la misteriosa pérdida de energía en Voyager 2",
       contenido: "La sonda Voyager 2 ha experimentado una pérdida de energía inesperada. Los ingenieros de la NASA están trabajando para optimizar su uso de energía y continuar con la misión de estudiar los confines del sistema solar.",
       fecha: "2024-08-15",
-      imagen: "/placeholder.svg?height=300&width=400"
+      imagen: "https://photojournal.jpl.nasa.gov/jpegMod/PIA17049_modest.jpg"
     }
   ];
 
