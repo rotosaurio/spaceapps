@@ -367,9 +367,9 @@ const Planetario = () => {
           <h2 className="text-2xl font-bold mb-2">{selectedPlanet.name}</h2>
           <p className="mb-2">{selectedPlanet.description}</p>
           <p><strong>Diameter:</strong> {selectedPlanet.diameter}</p>
-          <p><strong>Distance from Sn:</strong> {selectedPlanet.distanceFromSun}</p>
-          <p><strong>orbitsl Period</strong> {selectedPlanet.orbitalPeriod}</p>
-          <p><strong>DayLength:</strong> {selectedPlanet.dayLength}</p>
+          <p><strong>Distance from Sun:</strong> {selectedPlanet.distanceFromSun}</p>
+          <p><strong>Orbital Period:</strong> {selectedPlanet.orbitalPeriod}</p>
+          <p><strong>Day Length:</strong> {selectedPlanet.dayLength}</p>
         </div>
       )}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
@@ -381,7 +381,12 @@ const Planetario = () => {
         </button>
         <Link href="/foro">
           <button className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
-            go to Forum
+            Go to Forum
+          </button>
+        </Link>
+        <Link href="/noticias">
+          <button className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
+            Go to News
           </button>
         </Link>
       </div>

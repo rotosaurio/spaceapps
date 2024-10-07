@@ -6,7 +6,7 @@ import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 function Stars({ count = 5000 }) {
   const points = useMemo(() => {
@@ -100,7 +100,7 @@ export default function NASAGalaxyPortal() {
 
   const handleGuestAccess = () => {
     localStorage.setItem('guestToken', 'true')
-    router.push('/foro')
+    router.push('/planetario')
   }
 
   return (
@@ -125,7 +125,6 @@ export default function NASAGalaxyPortal() {
           className="text-base sm:text-lg mb-12 text-gray-300"
         >
           Embark on an interstellar journey
-
         </motion.p>
         <div className="space-y-4 flex flex-col items-center">
           <div className="space-x-6">
@@ -136,8 +135,8 @@ export default function NASAGalaxyPortal() {
               Register
             </Button>
           </div>
-          <Button onClick={() => router.push('/noticias')} variant="outline">
-            Guess Join
+          <Button onClick={handleGuestAccess} variant="outline">
+            Guest Join
           </Button>
           <Button href="/team-page" variant="outline">
             Our Team
