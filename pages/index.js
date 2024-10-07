@@ -124,22 +124,23 @@ export default function NASAGalaxyPortal() {
           transition={{ delay: 0.5, duration: 1 }}
           className="text-base sm:text-lg mb-12 text-gray-300"
         >
-          Embárcate en un viaje interestelar
+          Embark on an interstellar journey
+
         </motion.p>
         <div className="space-y-4 flex flex-col items-center">
           <div className="space-x-6">
             <Button href="/login">
-              Iniciar Sesión
+              Log in
             </Button>
             <Button href="/register">
-              Registrarse
+              Register
             </Button>
           </div>
           <Button onClick={() => router.push('/noticias')} variant="outline">
-            Acceso de Invitado
+            Guess Join
           </Button>
           <Button href="/team-page" variant="outline">
-            Nuestro Equipo
+            Our Team
           </Button>
         </div>
       </div>

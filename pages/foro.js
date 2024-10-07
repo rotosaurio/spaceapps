@@ -13,6 +13,7 @@ const categorias = [
   "Astrophysics"
 ];
 
+
 export default function Foro() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [titulo, setTitulo] = useState('');
@@ -28,7 +29,7 @@ export default function Foro() {
   const { data: session, status } = useSession();
   const [publicacionesPorCategoria, setPublicacionesPorCategoria] = useState({});
 
-  const displayName = session?.user?.name || 'Usuario Anónimo';
+  const displayName = session?.user?.name || 'ANONYMOUS USER';
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -50,7 +51,7 @@ export default function Foro() {
       }, {});
       setPublicacionesPorCategoria(conteo);
     } catch (error) {
-      console.error("Error al cargar las publicaciones:", error);
+      console.error("Error loading posts:", error);
     }
   };
 
@@ -59,7 +60,7 @@ export default function Foro() {
     setError('');
 
     if (!titulo.trim() || !contenido.trim() || !categoria) {
-      setError('El título, contenido y categoría son obligatorios.');
+      setError('The title, content and category are required.');
       return;
     }
 
@@ -82,8 +83,8 @@ export default function Foro() {
       setCategoria('');
       setMostrarFormulario(false);
     } catch (error) {
-      console.error("Error al gestionar la publicación:", error);
-      setError(error.response?.data?.error || 'Error al gestionar la publicación.');
+      console.error("Error managing publication:", error);
+      setError(error.response?.data?.error || 'Error managing the publication.');
     }
   };
 
@@ -96,14 +97,14 @@ export default function Foro() {
   };
 
   const handleEliminar = async (id) => {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta publicación?')) return;
+    if (!confirm('Are you sure you want to delete this post?')) return;
 
     try {
       await axios.delete(`/api/foro?id=${id}`);
       setPublicaciones(publicaciones.filter(pub => pub._id !== id));
     } catch (error) {
-      console.error("Error al eliminar la publicación:", error);
-      setError(error.response?.data?.error || 'Error al eliminar la publicación.');
+      console.error("Error deleting post:", error);
+      setError(error.response?.data?.error || 'Error deleting post:');
     }
   };
 
@@ -143,7 +144,7 @@ export default function Foro() {
       localStorage.removeItem('token');
       await signOut({ callbackUrl: '/login' });
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
+      console.error("Logout error:", error);
     }
   };
 
@@ -177,14 +178,14 @@ export default function Foro() {
       </div>
       <div className="h-64 bg-cover bg-center relative" style={{backgroundImage: "url('/bg-foro.jpeg')"}}>
         <div className="h-full bg-black bg-opacity-50 flex flex-col items-center justify-center">
-          <h1 className="text-4xl font-bold text-white text-center mb-8">Discute los misterios del universo</h1>
+          <h1 className="text-4xl font-bold text-white text-center mb-8">Discuss the mysteries of the universe</h1>
           <div className="w-full max-w-4xl flex items-center justify-between px-4">
             <div className="w-2/3 relative">
               <input 
                 type="text"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
-                placeholder="Buscar temas o miembros"
+                placeholder="Search topics or members"
                 className="w-full p-3 bg-gray-800 text-white rounded-lg pr-20"
               />
               <button 
@@ -198,7 +199,7 @@ export default function Foro() {
               onClick={() => setMostrarFormulario(!mostrarFormulario)}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg ml-4"
             >
-              Nueva publicación
+              New post
             </button>
           </div>
         </div>
@@ -208,13 +209,13 @@ export default function Foro() {
           <div className="md:w-3/4">
             {mostrarFormulario && (
               <form onSubmit={manejarPublicacion} className="mb-8 bg-gray-800 bg-opacity-50 p-6 rounded-lg">
-                <h2 className="text-2xl font-bold text-white mb-4">{editando ? "Editar publicación" : "Nueva publicación"}</h2>
+                <h2 className="text-2xl font-bold text-white mb-4">{editando ? "Edit post" : "New post"}</h2>
                 <div className="mb-4">
                   <input
                     type="text"
                     value={titulo}
                     onChange={(e) => setTitulo(e.target.value)}
-                    placeholder="Título de la publicación"
+                    placeholder="Post title"
                     className="w-full p-3 bg-gray-700 text-white rounded-lg"
                     required
                   />
@@ -226,7 +227,7 @@ export default function Foro() {
                     className="w-full p-3 bg-gray-700 text-white rounded-lg"
                     required
                   >
-                    <option value="">Selecciona una categoría</option>
+                    <option value="">Select a category</option>
                     {categorias.map((cat, index) => (
                       <option key={index} value={cat}>{cat}</option>
                     ))}
@@ -236,7 +237,7 @@ export default function Foro() {
                   <textarea
                     value={contenido}
                     onChange={(e) => setContenido(e.target.value)}
-                    placeholder="Escribe tu publicación aquí..."
+                    placeholder="Write your post here..."
                     className="w-full p-3 bg-gray-700 text-white rounded-lg"
                     rows="4"
                     required
@@ -248,7 +249,7 @@ export default function Foro() {
                     type="submit" 
                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-4"
                   >
-                    {editando ? "Actualizar" : "Publicar"}
+                    {editando ? "Update" : "Publish"}
                   </button>
                   {editando && (
                     <button 
@@ -256,7 +257,7 @@ export default function Foro() {
                       onClick={() => { setEditando(null); setTitulo(''); setContenido(''); setCategoria(''); setMostrarFormulario(false); }}
                       className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg"
                     >
-                      Cancelar
+                      Cancel
                     </button>
                   )}
                 </div>
@@ -265,20 +266,20 @@ export default function Foro() {
             
             <h2 className="text-2xl font-bold text-white mb-4">Featured</h2>
             {publicaciones.length === 0 ? (
-              <p className="text-gray-400">No hay publicaciones para mostrar.</p>
+              <p className="text-gray-400">No posts to display.</p>
             ) : (
               publicaciones.slice(0, 3).map(pub => (
                 <div key={pub._id} className="mb-4 p-4 bg-gray-800 bg-opacity-50 rounded-lg">
                   <h3 className="text-xl font-bold text-white mb-1">{pub.titulo}</h3>
                   <p className="text-gray-400">{pub.contenido.substring(0, 100)}...</p>
-                  <p className="text-sm text-gray-500 mt-2">Publicado por: {pub.nombre}</p>
+                  <p className="text-sm text-gray-500 mt-2">Posted by: {pub.nombre}</p>
                 </div>
               ))
             )}
           </div>
 
           <div className="md:w-1/4">
-            <h2 className="text-2xl font-bold text-white mb-4">Categorías</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Categories</h2>
             <ul>
               {categorias.map((cat, index) => (
                 <li key={index} className="mb-2">

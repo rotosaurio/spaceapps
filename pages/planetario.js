@@ -5,87 +5,88 @@ import FloatingButton from '../components/FloatingButton';
 import Link from 'next/link';
 import { signOut, useSession } from "next-auth/react";
 import TWEEN from '@tweenjs/tween.js';
+import { useRouter } from 'next/router';
 
 const planetInfo = [
   {
     name: 'Sun',
-    description: 'La estrella central de nuestro sistema solar.',
+    description: 'The central star of our solar system.',
     diameter: '1,391,000 km',
     distanceFromSun: '0 km',
     orbitalPeriod: 'N/A',
-    dayLength: '25-35 días terrestres (en el ecuador)'
+    dayLength: '25-35 Earth days (at the equator)'
   },
   {
     name: 'Mercury',
-    description: 'El planeta más pequeño y más cercano al Sol.',
+    description: 'The smallest planet and closest to the Sun.',
     diameter: '4,879 km',
-    distanceFromSun: '57.9 millones km',
-    orbitalPeriod: '88 días terrestres',
-    dayLength: '59 días terrestres'
+    distanceFromSun: '57.9 million km',
+    orbitalPeriod: '88 Earth days',
+    dayLength: '59 Earth days'
   },
   {
     name: 'Venus',
-    description: 'A menudo llamado el gemelo de la Tierra debido a su tamaño similar.',
+    description: 'Often called Earth\'s twin due to its similar size.',
     diameter: '12,104 km',
-    distanceFromSun: '108.2 millones km',
-    orbitalPeriod: '225 días terrestres',
-    dayLength: '243 días terrestres'
+    distanceFromSun: '108.2 million km',
+    orbitalPeriod: '225 Earth days',
+    dayLength: '243 Earth days'
   },
   {
     name: 'Earth',
-    description: 'Nuestro hogar, el único planeta conocido con vida.',
+    description: 'Our home, the only known planet with life.',
     diameter: '12,742 km',
-    distanceFromSun: '149.6 millones km',
-    orbitalPeriod: '365.25 días',
-    dayLength: '24 horas'
+    distanceFromSun: '149.6 million km',
+    orbitalPeriod: '365.25 days',
+    dayLength: '24 hours'
   },
   {
     name: 'Mars',
-    description: 'Conocido como el planeta rojo, objetivo de muchas misiones espaciales.',
+    description: 'Known as the Red Planet, target of many space missions.',
     diameter: '6,779 km',
-    distanceFromSun: '227.9 millones km',
-    orbitalPeriod: '687 días terrestres',
-    dayLength: '24 horas 37 minutos'
+    distanceFromSun: '227.9 million km',
+    orbitalPeriod: '687 Earth days',
+    dayLength: '24 hours 37 minutes'
   },
   {
     name: 'Asteroid Belt',
-    description: 'Región entre Marte y Júpiter con numerosos asteroides.',
-    diameter: 'Varía',
-    distanceFromSun: '329-478 millones km',
-    orbitalPeriod: 'Varía',
-    dayLength: 'Varía'
+    description: 'Region between Mars and Jupiter with numerous asteroids.',
+    diameter: 'Varies',
+    distanceFromSun: '329-478 million km',
+    orbitalPeriod: 'Varies',
+    dayLength: 'Varies'
   },
   {
     name: 'Jupiter',
-    description: 'El planeta más grande del sistema solar.',
+    description: 'The largest planet in the solar system.',
     diameter: '139,820 km',
-    distanceFromSun: '778.5 millones km',
-    orbitalPeriod: '11.9 años terrestres',
-    dayLength: '9 horas 56 minutos'
+    distanceFromSun: '778.5 million km',
+    orbitalPeriod: '11.9 Earth years',
+    dayLength: '9 hours 56 minutes'
   },
   {
     name: 'Saturn',
-    description: 'Famoso por sus anillos, compuestos principalmente de hielo y roca.',
+    description: 'Famous for its rings, composed mainly of ice and rock.',
     diameter: '116,460 km',
-    distanceFromSun: '1.434 billones km',
-    orbitalPeriod: '29.5 años terrestres',
-    dayLength: '10 horas 42 minutos'
+    distanceFromSun: '1.434 billion km',
+    orbitalPeriod: '29.5 Earth years',
+    dayLength: '10 hours 42 minutes'
   },
   {
     name: 'Uranus',
-    description: 'Un gigante de hielo con un eje de rotación único.',
+    description: 'An ice giant with a unique rotational axis.',
     diameter: '50,724 km',
-    distanceFromSun: '2.871 billones km',
-    orbitalPeriod: '84 años terrestres',
-    dayLength: '17 horas 14 minutos'
+    distanceFromSun: '2.871 billion km',
+    orbitalPeriod: '84 Earth years',
+    dayLength: '17 hours 14 minutes'
   },
   {
     name: 'Neptune',
-    description: 'El planeta más ventoso, con vientos que superan los 2,100 km/h.',
+    description: 'The windiest planet, with winds exceeding 2,100 km/h.',
     diameter: '49,244 km',
-    distanceFromSun: '4.495 billones km',
-    orbitalPeriod: '164.8 años terrestres',
-    dayLength: '16 horas 6 minutos'
+    distanceFromSun: '4.495 billion km',
+    orbitalPeriod: '164.8 Earth years',
+    dayLength: '16 hours 6 minutes'
   }
 ];
 
@@ -97,6 +98,7 @@ const Planetario = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [detailedView, setDetailedView] = useState(false);
   const [shouldReturnToFullView, setShouldReturnToFullView] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -383,19 +385,15 @@ const Planetario = () => {
           </button>
         </Link>
       </div>
-      {detailedView && (
-        
-        <button
-          onClick={returnToFullView}
-          className="absolute top-4 left-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded z-10">
-            <Link href="/noticias" className="text-lg text-white hover:text-blue-400 transition-colors">Volver</Link>
-          
-        </button>
-        
-      )}
-      <div style={{ position: 'absolute', left: '600px', bottom: '40px' }}>
-  <FloatingButton />
-    </div>
+      <button
+        onClick={() => router.push('/noticias')}
+        className="absolute top-4 left-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded z-10"
+      >
+        Volver
+      </button>
+      <div style={{ position: 'absolute', right: '20px', bottom: '20px' }}>
+        <FloatingButton />
+      </div>
     </div>
   );
 };

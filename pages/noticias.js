@@ -70,12 +70,12 @@ const CalendarIcon = () => (
   </svg>
 );
 
-export default function Noticias() {
+export default function News() {
   const router = useRouter();
   const [isGuest, setIsGuest] = useState(false);
   const [session, setSession] = useState(null);
   const [status, setStatus] = useState('loading');
-  const [filtro, setFiltro] = useState('');
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const checkSession = async () => {
@@ -89,7 +89,7 @@ export default function Noticias() {
           setStatus('unauthenticated');
         }
       } catch (error) {
-        console.error("Error al verificar la sesión:", error);
+        console.error("Error verifying session:", error);
         setStatus('unauthenticated');
       }
     };
@@ -109,7 +109,7 @@ export default function Noticias() {
     }
   }, [status, isGuest, router]);
 
-  const displayName = session?.user?.name || (isGuest ? 'Invitado' : 'Usuario Anónimo');
+  const displayName = session?.user?.name || (isGuest ? 'Guest' : 'Anonymous User');
 
   const handleLogout = async () => {
     if (isGuest) {
@@ -123,92 +123,92 @@ export default function Noticias() {
           router.push('/');
         }
       } catch (error) {
-        console.error("Error al cerrar sesión:", error);
+        console.error("Error logging out:", error);
       }
     }
   };
 
-  const noticias = [
+  const news = [
     {
       id: 1,
-      titulo: "Nuevos descubrimientos en Marte con el Perseverance",
-      contenido: "El rover Perseverance ha encontrado evidencias de rocas ígneas en el cráter Jezero de Marte, sugiriendo actividad volcánica pasada. Estos hallazgos son cruciales para entender la historia geológica del planeta y la posible existencia de vida antigua.",
-      fecha: "2024-10-15",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-pia24836_perseverance_selfie_at_rochette-rVzigUbWWcCmFrjoj5pObaaqNHMKDt.jpg",
+      title: "New discoveries on Mars with Perseverance",
+      content: "The Perseverance rover has found evidence of igneous rocks in Mars' Jezero crater, suggesting past volcanic activity. These findings are crucial for understanding the planet's geological history and the possible existence of ancient life.",
+      date: "2024-10-15",
+      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-pia24836_perseverance_selfie_at_rochette-rVzigUbWWcCmFrjoj5pObaaqNHMKDt.jpg",
       link: "https://science.nasa.gov/mission/mars-2020-perseverance/"
     },
     {
       id: 2,
-      titulo: "Erupción solar masiva del 3 de octubre de 2024",
-      contenido: "La NASA capturó una erupción solar de clase X9.0, una de las más poderosas, que podría afectar las comunicaciones y redes eléctricas en la Tierra. Esta actividad solar es estudiada para comprender mejor el comportamiento del Sol.",
-      fecha: "2024-10-03",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SDO_10-03-24_1219UTC_131-171_RedScreen_Band-nkDO7FntBaawwMr9YX8ZZI6fx6aYVY.jpg",
+      title: "Massive solar eruption on October 3, 2024",
+      content: "NASA captured a class X9.0 solar flare, one of the most powerful, which could affect communications and power grids on Earth. This solar activity is being studied to better understand the Sun's behavior.",
+      date: "2024-10-03",
+      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SDO_10-03-24_1219UTC_131-171_RedScreen_Band-nkDO7FntBaawwMr9YX8ZZI6fx6aYVY.jpg",
       link: "https://svs.gsfc.nasa.gov/4906"
     },
     {
       id: 3,
-      titulo: "Lanzamiento de la misión Europa Clipper",
-      contenido: "La NASA se prepara para lanzar la misión Europa Clipper en 2024, que explorará la luna Europa de Júpiter. Se espera que esta misión estudie su océano subterráneo y las posibilidades de vida en sus aguas saladas.",
-      fecha: "2024-09-20",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ksc-20230920-ph-kls01-0126large-L0SB2ZxV7yxIUJIbMVKrowuKxteb6d.jpg",
+      title: "Launch of the Europa Clipper mission",
+      content: "NASA is preparing to launch the Europa Clipper mission in 2024, which will explore Jupiter's moon Europa. This mission is expected to study its subsurface ocean and the possibilities of life in its salty waters.",
+      date: "2024-09-20",
+      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ksc-20230920-ph-kls01-0126large-L0SB2ZxV7yxIUJIbMVKrowuKxteb6d.jpg",
       link: "https://science.nasa.gov/mission/europa-clipper/"
     },
     {
       id: 4,
-      titulo: "Continúa la misión Artemis hacia la Luna",
-      contenido: "Las misiones Artemis están en marcha para devolver a los humanos a la Luna en esta década. Esta iniciativa ayudará a preparar el camino para la exploración humana de Marte y otros destinos del sistema solar.",
-      fecha: "2024-09-10",
-      imagen: "https://images-assets.nasa.gov/image/KSC-20220316-PH-KLS01_0308/KSC-20220316-PH-KLS01_0308~medium.jpg",
+      title: "Artemis mission to the Moon continues",
+      content: "The Artemis missions are underway to return humans to the Moon this decade. This initiative will help pave the way for human exploration of Mars and other destinations in the solar system.",
+      date: "2024-09-10",
+      image: "https://images-assets.nasa.gov/image/KSC-20220316-PH-KLS01_0308/KSC-20220316-PH-KLS01_0308~medium.jpg",
       link: "https://www.nasa.gov/humans-in-space/artemis/"
     },
     {
       id: 5,
-      titulo: "El telescopio James Webb encuentra moléculas complejas en exoplanetas",
-      contenido: "El telescopio espacial James Webb ha descubierto por primera vez en la atmósfera de exoplanetas moléculas complejas como el metano y el dióxido de carbono, lo que podría ser indicativo de procesos químicos que apoyen la vida. Esta imagen muestra la impresionante vista de la Nebulosa de Orión capturada por el telescopio, demostrando su capacidad para observar objetos celestes en diferentes longitudes de onda.",
-      fecha: "2024-08-25",
-      imagen: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/new-a-ch3-mirim-nircam-collage-cc-gbv2-jpg-1LcOgwk4DFrAsPwkN03JNLmD29e8Nd.jpg",
+      title: "James Webb telescope finds complex molecules in exoplanets",
+      content: "The James Webb Space Telescope has discovered complex molecules such as methane and carbon dioxide in the atmosphere of exoplanets for the first time, which could be indicative of chemical processes that support life. This image shows the impressive view of the Orion Nebula captured by the telescope, demonstrating its ability to observe celestial objects at different wavelengths.",
+      date: "2024-08-25",
+      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/new-a-ch3-mirim-nircam-collage-cc-gbv2-jpg-1LcOgwk4DFrAsPwkN03JNLmD29e8Nd.jpg",
       link: "https://science.nasa.gov/mission/webb/"
     },
     {
       id: 6,
-      titulo: "La NASA explora las posibles causas de la misteriosa pérdida de energía en Voyager 2",
-      contenido: "La sonda Voyager 2 ha experimentado una pérdida de energía inesperada. Los ingenieros de la NASA están trabajando para optimizar su uso de energía y continuar con la misión de estudiar los confines del sistema solar.",
-      fecha: "2024-08-15",
-      imagen: "https://photojournal.jpl.nasa.gov/jpegMod/PIA17049_modest.jpg",
+      title: "NASA explores possible causes of mysterious energy loss in Voyager 2",
+      content: "The Voyager 2 probe has experienced an unexpected loss of energy. NASA engineers are working to optimize its energy use and continue the mission to study the outer reaches of the solar system.",
+      date: "2024-08-15",
+      image: "https://photojournal.jpl.nasa.gov/jpegMod/PIA17049_modest.jpg",
       link: "https://science.nasa.gov/mission/voyager"
     }
   ];
 
-  const filteredNoticias = noticias.filter(noticia =>
-    noticia.titulo.toLowerCase().includes(filtro.toLowerCase()) ||
-    noticia.contenido.toLowerCase().includes(filtro.toLowerCase())
+  const filteredNews = news.filter(item =>
+    item.title.toLowerCase().includes(filter.toLowerCase()) ||
+    item.content.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      {/* Navegación superior */}
+      {/* Top navigation */}
       <nav className="bg-gray-900 py-4 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors mb-4 sm:mb-0">
             CosmoXplora
           </Link>
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Link href="/planetario" className="text-lg text-white hover:text-blue-400 transition-colors">Planetario</Link>
-            <Link href="/foro" className="text-lg text-white hover:text-blue-400 transition-colors">Foro</Link>
+            <Link href="/planetario" className="text-lg text-white hover:text-blue-400 transition-colors">Planetarium</Link>
+            <Link href="/foro" className="text-lg text-white hover:text-blue-400 transition-colors">Forum</Link>
             <div className="flex items-center space-x-4">
               <span className="text-white">{displayName}</span>
               <button 
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
               >
-                {isGuest ? 'Salir' : 'Cerrar Sesión'}
+                {isGuest ? 'Exit' : 'Log Out'}
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Contenido principal */}
+      {/* Main content */}
       <div className="flex-1 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Canvas>
@@ -217,44 +217,44 @@ export default function Noticias() {
         </div>
         <div className="relative z-10 min-h-screen flex flex-col">
           <div className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 text-center text-white">Noticias del Cosmos</h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 text-center text-white">Cosmic News</h1>
             <div className="max-w-md mx-auto mb-8 sm:mb-12">
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="Buscar noticias"
+                  placeholder="Search news"
                   className="w-full bg-gray-800 rounded-full py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  value={filtro}
-                  onChange={(e) => setFiltro(e.target.value)}
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
                 />
                 <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {filteredNoticias.map((noticia) => (
+              {filteredNews.map((item) => (
                 <motion.div 
-                  key={noticia.id} 
+                  key={item.id} 
                   className="bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <img src={noticia.imagen} alt={noticia.titulo} className="w-full h-48 object-cover" />
+                  <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
                   <div className="p-4 sm:p-6">
-                    <h2 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-blue-400">{noticia.titulo}</h2>
-                    <p className="text-sm sm:text-base text-gray-300 mb-3 sm:mb-4 line-clamp-3">{noticia.contenido}</p>
+                    <h2 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-blue-400">{item.title}</h2>
+                    <p className="text-sm sm:text-base text-gray-300 mb-3 sm:mb-4 line-clamp-3">{item.content}</p>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-400">
                       <div className="flex items-center mb-2 sm:mb-0">
                         <CalendarIcon className="mr-2" />
-                        <span>{noticia.fecha}</span>
+                        <span>{item.date}</span>
                       </div>
                       <a 
-                        href={noticia.link} 
+                        href={item.link} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-blue-400 hover:text-blue-300 transition-colors"
                       >
-                        Más información
+                        More information
                       </a>
                     </div>
                   </div>
