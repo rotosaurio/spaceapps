@@ -366,10 +366,10 @@ const Planetario = () => {
         <div className="absolute top-20 right-4 bg-[#5D6C8C] bg-opacity-50 p-4 rounded-lg shadow-lg max-w-md text-white">
           <h2 className="text-2xl font-bold mb-2">{selectedPlanet.name}</h2>
           <p className="mb-2">{selectedPlanet.description}</p>
-          <p><strong>Diámetro:</strong> {selectedPlanet.diameter}</p>
-          <p><strong>Distancia del Sol:</strong> {selectedPlanet.distanceFromSun}</p>
-          <p><strong>Período orbital:</strong> {selectedPlanet.orbitalPeriod}</p>
-          <p><strong>Duración del día:</strong> {selectedPlanet.dayLength}</p>
+          <p><strong>Diameter:</strong> {selectedPlanet.diameter}</p>
+          <p><strong>Distance from Sn:</strong> {selectedPlanet.distanceFromSun}</p>
+          <p><strong>orbitsl Period</strong> {selectedPlanet.orbitalPeriod}</p>
+          <p><strong>DayLength:</strong> {selectedPlanet.dayLength}</p>
         </div>
       )}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
@@ -377,11 +377,11 @@ const Planetario = () => {
           onClick={() => setIsPaused(!isPaused)}
           className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
         >
-          {isPaused ? 'Reanudar' : 'Pausar'}
+          {isPaused ? 'Resume' : 'Pause'}
         </button>
         <Link href="/foro">
           <button className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
-            Ir al Foro
+            go to Forum
           </button>
         </Link>
       </div>
@@ -389,7 +389,7 @@ const Planetario = () => {
         onClick={() => router.push('/noticias')}
         className="absolute top-4 left-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded z-10"
       >
-        Volver
+        Back
       </button>
       <div style={{ position: 'absolute', right: '20px', bottom: '20px' }}>
         <FloatingButton />
